@@ -1,0 +1,215 @@
+---
+title: "HW 6"
+author: "Sebastian Alzate Vargas"
+date: "30/9/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Problem 1
+Say $X$ be a random variable with $P(X=0)=P(X=1)=1/2$, and $Y$ a random variable with conditional density $f_{Y|X=x}(y|x) = cy^x(1-y);0<y<1$ . Find the mean and variance of $Y$ using theorem 1.9.6.
+
+#### Solution
+
+Tenemos $P(X=0)=P(X=1)=\dfrac{1}{2}$. Entonces,
+
+\begin{align*}
+    f(x,y) &= f_{Y|X=x}(y|x)\cdot f_X(x) \\
+    &= cy^x(1-y)\cdot\frac{1}{2}
+\end{align*}
+Luego,
+\begin{align*}
+    1 = \sum_x\int_{-\infty}^\infty f(x,y) dy &= \frac{1}{2}\sum_{x=0}^1\int_0^1cy^x(1-y)dy \\
+    &= \frac{c}{2}\sum_{x=0}^1\int_0^1(y^x-y^{x+1})dy \\
+    &= \frac{c}{2}\sum_{x=0}^1\left(\frac{y^{x+1}}{x+1} - \frac{y^{x+2}}{x+2}\right)_0^1 \\
+    &= \frac{c}{2}\left(\frac{1}{x+1} - \frac{1}{x+2}\right) \\
+    &= \frac{c}{2}\left(1 - \frac{1}{2}+\frac{1}{2}-\frac{1}{3}\right) \\
+    &= \frac{c}{3}
+\end{align*}
+Entonces, $c=3$.
+
+Así, $f_{Y|X=x}(y|x)=3y^x(1-y)$. Entones el $k^{th}$ momento de $Y$ es
+
+\begin{align*}
+    E(Y^k|X) = \int_{-\infty}^{\infty}y^k\cdot f_{Y|X=x}(y|x)dy &= 3\int_{0}^{1}y^k\cdot y^x(1-y) dy \\
+    &= 3\int_{0}^{1}\left(y^{k+x}-y^{k+x+1}\right) dy \\
+    &= 3\left(\frac{y^{k+x+1}}{k+x+1}-\frac{y^{k+x+2}}{k+x+2}\right)_0^1 \\
+    &= 3 \left(\frac{1}{k+x+1}-\frac{1}{k+x+2}\right)
+\end{align*}
+
+La primera parte del teorema nos dice que $E[Y] = E\left[E(Y|X)\right]$. Entonces para encontrar la varianza de $Y$ necesitamos:
+
+
+\begin{align*}
+    E(Y) = E\left[E(Y|X)\right] &= E\left[3 \left(\dfrac{1}{x+2}-\dfrac{1}{x+3}\right)\right]\\
+    &= 3 E\left[\dfrac{1}{x+2}-\dfrac{1}{x+3}\right]\\
+    &= 3\sum_{x=0}^1 \left(\dfrac{1}{x+2}-\dfrac{1}{x+3}\right)\cdot\dfrac{1}{2}\\
+    &= \dfrac{3}{2}\sum_{x=0}^1 \left(\dfrac{1}{x+2}-\dfrac{1}{x+3}\right)\\
+    &= \dfrac{3}{2}\cdot\dfrac{1}{4}\\
+    &= \dfrac{3}{8}
+\end{align*}
+
+\begin{align*}
+    E\left(Y^2\right) = E\left[E(Y^2|X)\right] &= E\left[3 \left(\dfrac{1}{x+3}-\dfrac{1}{x+4}\right)\right]\\
+    &=3 E \left[\dfrac{1}{x+3}-\dfrac{1}{x+4}\right]\\
+    &= 3\sum_{x=0}^1 \left(\dfrac{1}{x+3}-\dfrac{1}{x+4}\right)\cdot\dfrac{1}{2}\\
+   &= \dfrac{3}{2}\sum_{x=0}^1 \left(\dfrac{1}{x+3}-\dfrac{1}{x+4}\right)\\
+    &= \dfrac{3}{2}\cdot\dfrac{2}{15}\\
+    &= \dfrac{1}{5}
+\end{align*}
+
+Finalmente, 
+
+\begin{align*}
+    var(Y) &= E\left(Y^2\right) - \left[E(Y)\right]^2\\
+    &= \dfrac{1}{5}-\left[\dfrac{3}{8}\right]^2\\
+    &= \dfrac{19}{320}
+\end{align*}
+
+
+por el teorema también tenemos que: $$var(Y) = E[var(Y|X)] + var(E[Y|X])$$
+
+Encontremos cada uno de los términos
+
+\begin{align*}
+    var(Y|X) &= E(Y^2|X)-E(Y|X)^2 \\
+    &= E\left[3 \left(\dfrac{1}{x+3}-\dfrac{1}{x+4}\right)\right] - E\left[3 \left(\dfrac{1}{x+2}-\dfrac{1}{x+3}\right)\right]^2 \\
+    &=3 \left(\dfrac{1}{x+3}-\dfrac{1}{x+4}\right)-\left(3 \left(\dfrac{1}{x+2}-\dfrac{1}{x+3}\right)\right)^2 
+\\ \\ \\
+    E(var(Y|X))&= E\left[3 \left(\dfrac{1}{x+3}-\dfrac{1}{x+4}\right)-\left(3 \left(\dfrac{1}{x+2}-\dfrac{1}{x+3}\right)\right)^2 \right]\\
+    &=3 E \left(\dfrac{1}{x+3}-\dfrac{1}{x+4}\right)-9E\left[ \left(\dfrac{1}{x+2}-\dfrac{1}{x+3}\right)^2\right]\\
+    &= 3\sum_{x=0}^1 \left(\dfrac{1}{x+3}-\dfrac{1}{x+4}\right)\cdot\dfrac{1}{2}-9\cdot\sum_{x=0}^1 \left(\dfrac{1}{x+2}-\dfrac{1}{x+3}\right)^2\cdot\dfrac{1}{2}\\
+    &= \dfrac{1}{5}-9\cdot\frac{5}{288}\\
+     &= \dfrac{7}{160}
+\\ \\ \\
+    var(E(Y|X))&= E(E(Y|X)^2)-\left[E(E(Y|X))\right]^2\\
+    &= \dfrac{5}{32}-\left(\dfrac{3}{8} \right)^2\\
+    &= \dfrac{1}{64}
+\end{align*}
+
+Reemplanzando todo obtenemos que:
+
+\begin{align*}
+    var(Y) &= E(var(Y|X)) + var(E(Y|X)) \\
+    &= \dfrac{7}{160}+\dfrac{1}{64}\\
+    &= \dfrac{19}{320}
+\end{align*}
+
+## Problem 2
+Let $X$ be a random variable with moment generating function $\psi$. Assuming the conditions of theorem 1.10.5 hold show that
+$$\frac{d^2 \log \psi(t) }{dt^2}|_{t=0}=var(X)$$
+
+Use this to find the variance of $X\sim Geom(p)$
+
+#### Solution 
+\begin{align*}
+    \log(\psi(t))&=\log(E(e^{tX})) \\ \\
+    \frac{d\log(\psi(t))}{dt} &=  \frac{\frac{dE(e^{tX})}{dt}}{E(e^{tX})} \\ \\
+    \frac{d^2\log(\psi(t))}{dt^2} &=\frac{\frac{d^2E(e^{tX})}{dt^2}\cdot E(e^{tX})-\frac{dE(e^{tX})}{dt}\cdot \frac{dE(e^{tX})}{dt}}{E(e^{tX})^2} \\
+\end{align*}
+
+Por teorema 1.10.5 se sabe que: $\psi^k(0) = \dfrac{d^k E[e^{tX}]}{dt^k}\vert_{t=0} = E(X^k)$. Entonces,
+
+\begin{align*}
+    \log(\psi(t))|_{t=0} &= \frac{E(1)\cdot E(X^2)-E(X)\cdot E(X)}{E(1)^2} \\
+    &= E(X^2)-E(X)^2 \\
+    &= Var(X)
+\end{align*}
+
+Sea $X\sim Geom(p)$ hallemos $Var(X)$ usando lo anterior:
+
+Del ejemplo 1.10.3 tenemos que $\psi(t)=\dfrac{p}{1-e^{t}(1-p)}$
+\begin{align*}
+    \log(\psi(t)) &=\log \left(\dfrac{pe^{t}}{1-e^{t}(1-p)} \right) \\ \\
+     \frac{d\log(\psi(t))}{dt} &= \dfrac{1-e^{t}(1-p)}{pe^{t}}\cdot\dfrac{pe^{t}\left( 1-e^{t}(1-p)\right)-pe^{t}\left( -e^{t}(1-p)\right)}{\left( 1-e^{t}(1-p)\right)^2} \\
+      &=\dfrac{1}{1-e^{t}(1-p)} \\ \\
+      \frac{d^2\log(\psi(t))}{dt^2}&= \dfrac{e^{t}(1-p)}{\left( 1-e^{t}(1-p)\right)^2} \\ \\
+      Var(X) &= \frac{d^2\log(\psi(t))}{dt^2}\vert_{t=0}\\
+      &= \dfrac{e^{t}(1-p)}{\left( 1-e^{t}(1-p)\right)^2}\vert_{t=0}\\
+      &= \dfrac{e^{0}(1-p)}{\left( 1-e^{0}(1-p)\right)^2}\\
+      &= \dfrac{1-p}{p^2}
+\end{align*}
+
+## Problem 3
+Let $X$ be a random variable with density $f(x)=3x^2$, $0<x<1$. Find the moment generating function of $X$.
+
+#### Solution
+
+Sabemos que $\psi(t)=E(e^{tX})$. Entonces para la densidad dada obtenemos que la generadora de momentos es:
+
+\begin{align*}
+    \psi(t) = \int_{-\infty}^{\infty} e^{tx}f(x)dx &= \int_{0}^{1} e^{tx}3x^2dx = 3\int_{0}^{1} e^{tx}x^2dx
+\end{align*}
+Sea $u=x^2$ y $dv=e^{tx}dx$. Entonces $du=2x dx$ y $v=\dfrac{e^{tx}}{t}$.
+
+\begin{align*}
+     \psi(t) &=3\left(x^2\cdot \dfrac{e^{tx}}{t}|_0^1 - \frac{2}{t}\int_{0}^{1}e^{tx}\cdot x dx \right) \\
+     &= \dfrac{3e^{t}}{t} - \frac{6}{t}\int_{0}^{1}e^{tx}\cdot x dx
+\end{align*}
+
+Sea $u=x$ y $dv=e^{tx}dx$. Entonces $du=dx$ y $v=\dfrac{e^{tx}}{t}$.
+
+\begin{align*}
+     \psi(t) &=3\left(x^2\cdot \dfrac{e^{tx}}{t}|_0^1 - \frac{2}{t}\int_{0}^{1}e^{tx}\cdot x dx \right) \\
+     &= \dfrac{3e^{t}}{t} - \frac{6}{t}\left(\dfrac{xe^{tx}}{t}|_0^1-\frac{1}{t}\int_{0}^{1}e^{tx}dx\right) \\
+      &= \dfrac{3e^{t}}{t} -\dfrac{6e^{t}}{t^2} + \dfrac{6e^{tx}}{t^3}|_0^1 \\
+      &=\dfrac{3e^{t}}{t} -\dfrac{6e^{t}}{t^2} + \dfrac{6e^{t}-6}{t^3}
+\end{align*}
+
+## Problem 4
+Find a condition on the moment generating function of a random variable $X$ so that $X$ and $Y=-X$ have the same distribution. Give an example.
+
+Find a condition on the moment generating function of a random variable $X$ so that $X$ and $Y=1-X$ have the same distribution. Give an example.
+
+#### Solution 
+a. Veamos que condicion se debe cumplir para que tenga la misma    distribucion
+
+   \begin{align*}
+      \psi_X(t)&=\psi_{Y}(t)\\
+      E\left(e^{tX} \right)&= E\left(e^{tY} \right)\\
+      E\left(e^{tX} \right)&= E\left(e^{-Xt} \right)\\
+      \psi_X(t)&=\psi_{X}(-t)
+   \end{align*}
+   Entonces la función generadora es simétrica. 
+
+   Un ejemplo es de una variable aleatoria $X$, donde $X\sim      N(0,\sigma^2)$
+
+   La generadora esta dada por 
+
+  $$\psi_X(t)=E\left(e^{tX}             \right)=\dfrac{1}{\sigma\sqrt{2\pi}}\int_{-\infty}^\infty         e^{tX} e^{-\dfrac{(x-0)^2}{2\sigma^2}}dx=e^{\sigma^2 t^2 / 2}$$
+
+   Entonces, 
+
+   $$\psi_X(t)=e^{\sigma^2 t^2 / 2}=e^{\sigma^2 (-t)^2 /          2}=\psi_X(-t)$$
+
+   Por ende, $\psi_X(t)=\psi_{Y}(t)$, y por teorema 1.10.9 las     funciones de distribución tienen que ser iguales. Es decir,    $F_X(x)=F_Y(y)$ para $Y=-X$
+
+
+
+
+
+b. Veamos que condicion se debe cumplir para que tenga la misma     distribucion
+
+
+   \begin{align*}
+     \psi_X(t)&=\psi_{Y}(t)\\
+      E\left(e^{tX} \right)&= E\left(e^{tY} \right)\\
+      E\left(e^{tX} \right)&= E\left(e^{t-Xt} \right)\\
+      E\left(e^{tX} \right)&= E\left(e^{t}\cdot e^{-Xt}\right)\\
+     E\left(e^{tX} \right)&=e^{t}\cdot  E\left(e^{-Xt}\right)\\
+    \psi_X(t)&=e^{t}\cdot \psi_{X}(-t)
+   \end{align*}
+
+
+   Un ejemplo es de una variable aleatoria discreta $X$,          $P(X=x)=1/2$ para $x=0,1$. Veamos que la condición se cumple
+
+  \begin{align*}
+      \psi_X(t)&=e^{t}\cdot \psi_{X}(-t)\\
+       E\left(e^{tX} \right)&=e^{t}\cdot  E\left(e^{-Xt} \right)\\
+      \sum_{x=0}^1 e^{tX}\cdot f(x) &=e^{t}\cdot \sum_{x=0}^1 e^{-tX}\cdot f(x)\\
+     \sum_{x=0}^1 e^{tX}\cdot \dfrac{1}{2} &= \sum_{x=0}^1 e^{t(1-X)}\cdot \dfrac{1}{2}\\
+     \dfrac{1}{2}+\dfrac{1}{2}e^{t}&=\dfrac{1}{2}e^{t}+\dfrac{1}{2}
+   \end{align*}
+
+   Como se cumple lo anterior entonces $\psi_X(t)=\psi_{Y}(t)$    y por teorema 1.10.9 se tiene que $F_X(x)=F_Y(y)$, donde       $Y=1-X$.

@@ -1,0 +1,131 @@
+---
+title: "HW 10"
+author: "Sebastian Alzate Vargas"
+date: "4/11/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Problem 1
+Let $X_n\sim N(0,1+1/n)$ and $X\sim N(0,1)$. Find a joint distribution of $(X_n,X)$ so that $X_n\rightarrow X$
+
+### Solution 
+Por la desigualdad de Chebyschev, 
+
+$$P(|X_n-X|\geq \varepsilon) \leq \frac{var(X_n-X)}{\varepsilon^2}$$
+
+\begin{align*}
+    var(X_n-X) &= var(X_n)+var(X)-2cov(X_n,X) \\
+    &= \left( 1+\frac{1}{n}\right)^2 + 1^2 - 2cov(X_n,X) \\
+    &= 2+\frac{2}{n}+\frac{1}{n^2}-2cov(X_n,X)
+\end{align*}
+
+Podemos considerar $\rho = \frac{n+1}{n}$. Entonces 
+
+\begin{align*}
+    &\lim_{n\rightarrow\infty}cov(X_n,X)\\
+    =&\lim_{n\rightarrow\infty}\rho \sigma_{X_n}\sigma_X\\
+    =&\lim_{n\rightarrow\infty}\frac{n+1}{n}\left(1+ \dfrac{1}{n}\right)\cdot 1\\
+    =& 1
+\end{align*}
+
+Entonces $\lim_{n\rightarrow\infty}var(X_n-X) =0$.
+
+Así, tenemos que $X_n \rightarrow X$ en probabilidad
+
+
+## Problem 2
+Let $X\sim U[0,1]$ and $X_n|X=x\sim U[x,x+1/n]$. Show that $X_n\rightarrow X$ in probability.
+
+### Solution 
+
+Veamos lo siguiente
+
+\begin{align*}
+P(|X_n-x|<\epsilon|X=x) = P( x-\epsilon < X_n < x+\epsilon | X=x)
+\end{align*}
+
+Para $\epsilon>0$  existe $N \in \mathbb{N}$ tal que $1/N<\epsilon$. 
+
+Entonces para todo $n>N$ tenemos que $1/n <1/N < \epsilon$
+
+Tenemos lo siguiente
+
+\begin{align*}
+(x-1/n, x+1/n) \subset (x-1/n_\epsilon,x+1/n_\epsilon) \subset(x-\epsilon, x+ \epsilon) 
+\end{align*}
+
+Además
+
+\begin{align*}
+1 = P( x-1/n< X_n < x+ 1/n | X=x) \leq P( x-\epsilon < X_n < x+\epsilon | X=x)
+\end{align*}
+
+para todo $n>N$. Además,
+
+\begin{align*}
+P(|X_n-x|<\epsilon|X=x)= P( x-\epsilon < X_n < x+\epsilon | X=x) =1
+\end{align*}
+
+para todo $n>N$.
+
+Por otro lado tenemos, 
+
+\begin{align*}
+P(|X_n-x|<\epsilon) &= \int_0^1 P(|X_n-x|<\epsilon|X=x)f(x)dx \\ \\
+&=\int_0^1 P(|X_n-x|<\epsilon|X=x)dx \\ \\
+&= P(|X_n-x|<\epsilon|X=x) \\ \\
+& n \longrightarrow \infty \\ &= 1 
+\end{align*}
+para todo $n>N$.
+ 
+\begin{align*}
+P(|X_n-x|>\epsilon) = 1 - P(|X_n-x|<\epsilon) = 1 - 1 = 0  
+\end{align*}
+
+
+Así tenemos convergencia en probabilidad.
+
+
+
+## Problem 3
+Let $X_n$ be a random variable with $P(X_n=0)=1/n,P(X_n=1)=1-2/n,P(X_n=2)=1/n$. Show that $X_n\rightarrow 1$ in probability
+
+(a) using the definition 3.2.6
+
+(b) using theorem 3.2.9 a
+
+### Solution 
+
+a. Usemos la definición 3.2.6
+
+\begin{align*}
+    \lim_{n\rightarrow\infty} P(|X_n-1| \geq \varepsilon ) &= 1- \lim_{n\rightarrow\infty} P(|X_n-1| < \varepsilon ) \\
+    &= 1- \lim_{n\rightarrow\infty} P(-\varepsilon < X_n - 1 < \varepsilon ) \\
+    &= 1- \lim_{n\rightarrow\infty} P(1 - \varepsilon < X_n < \varepsilon + 1 ) \\
+    &= 1- \lim_{n\rightarrow\infty} P( X_n = 1 ) \\
+    &= 1- \lim_{n\rightarrow\infty}\left( 1-\frac{2}{n}\right) \\
+    &= \lim_{n\rightarrow\infty}\frac{2}{n} \\
+    &= 0
+\end{align*}
+
+b. Convergencia en media cuadrática implica convergencia en probabilidad.
+
+Veamos que $E(X_n)$ tiende a 1, y que $var(X_n)$ tiende a cero.
+
+\begin{align*}
+    E(X_n) &= \frac{1}{n}\cdot 0 + \left( 1-\frac{2}{n}\right)\cdot 1 + \frac{1}{n}\cdot 2 \\
+    &= 1 - \frac{2}{n} + \frac{2}{n} \\
+    &= 1 \\ \\
+E(X_n^2) &= \frac{1}{n}\cdot 0^2 + \left( 1-\frac{2}{n}\right)\cdot 1^2 + \frac{1}{n}\cdot 2^2 \\  &= 1 + \frac{2}{n} \\
+\end{align*}
+
+Entonces, $$\lim_{n\rightarrow\infty} var(X_n) = \lim_{n\rightarrow\infty} E(X_n^2) - E(X_n)^2 = \lim_{n\rightarrow\infty} 1+\frac{2}{n}-1 = \lim_{n\rightarrow\infty} \frac{2}{n} = 0$$
+
+Concluimos que $X_n\rightarrow 1$ en probabilidad.
+
+
+
+
+

@@ -1,0 +1,223 @@
+---
+title: "HW 3"
+author: "Sebastian Alzate Vargas - 502202289"
+date: "9/9/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# Problem 1
+Find an example of two discrete random variables X and Y (on the same sample space) such that X and Y have the same distribution (i.e., same density and same CDF), but the event X = Y never occurs.
+
+### Solution
+Consideremos el siguiente experimento: se lanza una moneda justa $2n+1$ veces, con $n$ número natural. 
+
+Definamos los siguientes eventos: 
+
+$$X: \text{El n\'umero de caras obtenidas en los }2n+1 \text{ lanzamientos}$$
+$$Y: \text{El n\'umero de sellos obtenidos en los }2n+1 \text{ lanzamientos}$$
+
+Es claro que, $P(cara)=0.5=P(sello)=1-0.5$
+
+Claramente es el mismo espacio muestral.
+
+Para los $2n+1$ lanzamientos tenemos 
+
+\begin{align*}
+P(X=k)&= {2n+1 \choose k}0.5^k(1-0.5)^{n-k}  \ \ \ \ \hspace{.7 cm} {0 \leq k \leq n}\\
+&= {2n+1 \choose k}0.5^n
+\end{align*}
+
+\begin{align*}
+P(Y=k)&= {2n+1 \choose k}(1-0.5)^k(0.5)^{n-k}  \ \ \ \ \hspace{.7 cm} {0 \leq k \leq n}\\
+&= {2n+1 \choose k}0.5^n
+\end{align*}
+
+Entonces tenemos que 
+
+\begin{align*}
+P(X \leq k)=P(Y \leq k) = \sum_{i=0}^k {2n+1 \choose i}0.5^n
+\end{align*}
+
+Así, $X$ y $Y$ tienen la misma distribución. 
+
+Sabemos que $$\#\text{ caras} + \#\text{sellos} = 2n+1$$
+
+De lo anterior es imposible que pase que $X=Y$
+
+# Problem 2
+Consider the following game: first we press a button, and a computer gives us a random variable $X\sim U[0,10]$. If $X$ is less then 4 we roll a fair die, otherwise we roll a die which gives the number $i$ proportional to $i^2$. (that means $P(i)=c*i^2$ for some constant $c$). Let $Y$ be the number rolled. Find the distribution function of $Y$.
+
+### Solution
+Es claro que $X$ es una variable continua y $Y$ una variable discreta. Por teorema 1.6.28 tenemos que:
+$$f_Y(y)=\int_{-\infty}^\infty f_{Y|X=x}(y|x)f_{X}(x)dx$$
+
+Como $X \sim U[0,10]$, entonces
+\begin{align*}
+    f_Y(k) &= \int_{-\infty}^\infty f_{Y|X=x}(k|x)f_X(x) dx \\
+    &= \int_0^4 P(Y=k\vert X=x)f_X(x) dx +\int_4^{10} P(Y=k\vert X=x)f_X(x) dx\\
+    &= \int_0^4 \dfrac{1}{6}\cdot\dfrac{1}{10}dx + \int_4^{10} {cy^2}\cdot\dfrac{1}{10}dx\\
+    &= \dfrac{4}{60}+\dfrac{6cy^2}{10}\\
+    &= \dfrac{1}{15}+\dfrac{3cy^2}{5}\\
+\end{align*}
+
+Encontremos el valor de $c$
+
+\begin{align*}
+    1&=\sum_k f_Y(k)\\
+    &=\sum_{i=1}^6 \dfrac{1}{15}+\dfrac{3\cdot c\cdot i^2}{5}\\
+    &=\dfrac{6}{15}+\dfrac{3c}{5}\cdot\dfrac{6\cdot(6+1)(2\cdot6+1)}{6}\\
+    &= \dfrac{2}{5}+\dfrac{273c}{5}
+\end{align*}
+
+Así, $c=\dfrac{1}{91}$
+
+Entonces la función de distribución esta dada por:
+
+\begin{align*}
+    F_Y(y)&=\sum_{i=1}^y \dfrac{1}{15}+\dfrac{3}{91\cdot5}i^2\\
+    &= \dfrac{y}{15}+\dfrac{3}{455}\dfrac{y(y+1)(2y+1)}{6} \\
+    &= \dfrac{y}{15}+\dfrac{1}{910}y(y+1)(2y+1)
+\end{align*}
+
+Para $y=1, ... , 6$
+
+# Problem 3
+Consider the following random variable X: we roll a fair die. If the number i comes up $X\sim U[0,i]$. Find the distribution function of $X$. Draw the graph.
+
+### Solution
+Si $X\sim U[0,i]$, entonces
+$$F_X(x)= \left\{ \begin{array}{lcc}
+             0 &   si  & x < 0 \\
+             \dfrac{x}{i} &  si & 0 \leq x < i \\
+             1 &  si  & x \geq i
+             \end{array}
+   \right.$$
+Tenemos que $F(x)=0$ si $x<0$. Luego,
+
+\begin{itemize}
+    \item $0\leq x<1$
+    \begin{align*}
+        F(x) &= P(X\leq x) \\
+        &= \sum_{i=1}^6 P(X\leq x \vert i)P(i) \\
+        &= x\cdot \frac{1}{6} + \frac{x}{2}\cdot \frac{1}{6} + \frac{x}{3}\cdot\frac{1}{6} + \frac{x}{4}\cdot \frac{1}{6} + \frac{x}{5}\cdot \frac{1}{6} + \frac{x}{6}\cdot \frac{1}{6}\\
+        &= \frac{49x}{120}
+    \end{align*}
+    
+    \item $1\leq x<2$, notemos que $P(X\leq x \vert 1)=1$, pues $x\geq 1$
+    \begin{align*}
+        F(x) &= P(X\leq x) \\
+        &= \sum_{i=1}^6 P(X\leq x \vert i)P(i) \\
+        &= 1\cdot \frac{1}{6} + \frac{x}{2}\cdot \frac{1}{6} + \frac{x}{3}\cdot\frac{1}{6} + \frac{x}{4}\cdot \frac{1}{6} + \frac{x}{5}\cdot \frac{1}{6} + \frac{x}{6}\cdot \frac{1}{6}\\
+        &= \frac{29x}{120} + \frac{1}{6}
+    \end{align*}
+    
+    \item $2\leq x<3$
+    \begin{align*}
+        F(x) &= P(X\leq x) \\
+        &= \sum_{i=1}^6 P(X\leq x \vert i)P(i) \\
+        &= 1\cdot \frac{1}{6} + 1\cdot \frac{1}{6} + \frac{x}{3}\cdot\frac{1}{6} + \frac{x}{4}\cdot \frac{1}{6} + \frac{x}{5}\cdot \frac{1}{6} + \frac{x}{6}\cdot \frac{1}{6}\\
+        &= \frac{19x}{120} + \frac{2}{6}
+    \end{align*}
+    
+    \item $3\leq x<4$
+    \begin{align*}
+        F(x) &= P(X\leq x) \\
+        &= \sum_{i=1}^6 P(X\leq x \vert i)P(i) \\
+        &= 1\cdot \frac{1}{6} + 1\cdot \frac{1}{6} + 1\cdot\frac{1}{6} + \frac{x}{4}\cdot \frac{1}{6} + \frac{x}{5}\cdot \frac{1}{6} + \frac{x}{6}\cdot \frac{1}{6}\\
+        &= \frac{37x}{360} + \frac{3}{6}
+    \end{align*}
+    
+    \item $4\leq x<5$
+    \begin{align*}
+        F(x) &= P(X\leq x) \\
+        &= \sum_{i=1}^6 P(X\leq x \vert i)P(i) \\
+        &= 1\cdot \frac{1}{6} + 1\cdot \frac{1}{6} + 1\cdot\frac{1}{6} + 1\cdot \frac{1}{6} + \frac{x}{5}\cdot \frac{1}{6} + \frac{x}{6}\cdot \frac{1}{6}\\
+        &= \frac{11x}{180} + \frac{4}{6}
+    \end{align*}
+    
+    \item $5\leq x<6$
+    \begin{align*}
+        F(x) &= P(X\leq x) \\
+        &= \sum_{i=1}^6 P(X\leq x \vert i)P(i) \\
+        &= 1\cdot \frac{1}{6} + 1\cdot \frac{1}{6} + 1\cdot\frac{1}{6} + 1\cdot \frac{1}{6} + 1\cdot \frac{1}{6} + \frac{x}{6}\cdot \frac{1}{6}\\
+        &= \frac{x}{36} + \frac{5}{6}
+    \end{align*}
+    \item $F(x) = 1$, \ \mbox{si $x\geq 6$}
+\end{itemize}
+
+```{r}
+library(ggplot2)
+x<-c(0,1,1,2,2,3,3,4,4,5,5,6)
+y<-c(0,49*1/120,29*1/120+1/6,29*2/120+1/6,
+     19*2/120+2/6,19*3/120+2/6,37*3/360+3/6,
+     37*4/360+3/6,11*4/180+4/6,11*5/180+4/6,5/36+5/6,6/36+5/6)
+
+ggplot(data.frame(x,y), aes(x,y))+geom_line()
+```
+
+
+# Problem 4
+Consider a density of the following shapes:
+
+so $f$ increases quadraticaly from 0 to some a and then decreases linearly to 0 at 1. Find an expression for the distribution function $F(x;a)$. Find $F(0.6; 0.2)$. (Note that the quadratic function has a vertex at 0).
+
+### Solution
+\textbf{Parábola}: Tenemos el vértice y un punto 
+
+$$\text{vértice: }(0,0) \ , \ \text{punto de la parábola: }\left(a,f(a)\right)$$
+
+La ecuación de la parábola esta dada por: $x^2=4\cdot p \cdot y$, donde p es el foco.
+
+Entonces:
+$$a^2=4pf(a)\ \ \Longrightarrow \ \  p=\dfrac{a^2}{4f(a)}$$
+Así,
+
+$$x^2=\dfrac{a^2}{f(a)}y\ \ \Longrightarrow \ \ y=\dfrac{f(a)x^2}{a^2}$$
+
+
+\textbf{Recta:} Para la ecuación de la recta vamos a usar el punto $(1,0)$ y $(a,f(a))$. Por tanto, la pendiente de la recta es $\dfrac{f(a)}{a-1}$. Entonces
+\begin{align*}
+    y = \frac{f(a)}{a-1}(x-1)
+\end{align*}
+
+Ahora debemos encontrar $f(a)$, 
+\begin{align*}
+    1 = \int_{-\infty}^{\infty}f(x)dx &= \int_{0}^{a}\dfrac{f(a)x^2}{a^2}dx + \int_{a}^{1}\frac{f(a)}{a-1}(x-1)dx \\
+    &= \dfrac{f(a)}{a^2}\cdot \frac{x^3}{3} \Big\vert_{0}^{a} + \frac{f(a)}{a-1}\cdot \dfrac{(x-1)^2}{2}\Big\vert_{a}^{1} \\
+    &= \frac{af(a)}{3} - \frac{(a-1)f(a)}{2} \\
+    &= f(a)\left( \frac{3-a}{6}\right)
+\end{align*}
+Entonces, $f(a)=\dfrac{6}{3-a}$.
+
+
+Encontremos la función distribución,
+
+\begin{itemize}
+    \item $F(x) = 0$, si $x<0$.
+    \item $0\leq x <a$
+    \begin{align*}
+        F(x;a) = \int_{-\infty}^x f(t)dt &= \int_{0}^x \dfrac{f(a)t^2}{a^2}dt \\
+        &= \dfrac{f(a)}{a^2}\cdot \frac{t^3}{3} \Big\vert_{0}^{x} \\
+        &= \frac{f(a)x^3}{3a^2}
+    \end{align*}
+    
+     \item $a\leq x <1$
+    \begin{align*}
+        F(x;a) = \int_{-\infty}^x f(t)dt &= \frac{f(a)a^3}{3a^2} + \int_{a}^{x}\frac{f(a)}{a-1}(t-1)dt \\
+        &= \frac{f(a)a^3}{3a^2} + \frac{f(a)}{a-1}\cdot \dfrac{(t-1)^2}{2}\Big\vert_{a}^{x} \\
+        &= f(a)\left( \frac{a}{3} + \frac{(x-1)^2}{2(a-1)} - \frac{a-1}{2}\right)\\
+        &= \dfrac{6}{3-a}\left( \frac{a}{3} + \frac{(x-1)^2}{2(a-1)} - \frac{a-1}{2}\right)
+    \end{align*}
+    \item $F(x)=1$, si $x\geq 1$.
+\end{itemize}
+
+Hallando $F(0.6,0.2)$, donde $x=0.6$, $a=0.2$, entonces $a\leq x <1$. Por tanto,
+
+\begin{align*}
+    F(0.6,0.2) &= f(0.2)\left( \frac{0.2}{3} + \frac{(0.6-1)^2}{2(0.2-1)} - \frac{0.2-1}{2}\right) \\ \\
+    &= \dfrac{6}{3-(0.2)}\left( \frac{0.2}{3} + \frac{(0.6-1)^2}{2(0.2-1)} - \frac{0.2-1}{2}\right) \\ \\
+    &\approx 0.7857
+\end{align*}
+

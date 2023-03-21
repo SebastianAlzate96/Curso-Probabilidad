@@ -1,0 +1,194 @@
+---
+title: "HW 2"
+author: "Sebastian Alzate Vargas"
+date: "02/09/2021"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+# Problem 1
+
+a. Can an event $A$ be independent of itself? If so, how?
+
+b. Say $A$ and $B$ are independent. Are $A^c$ and $B^c$ always independent?
+
+### Solution
+
+a. Por definición de eventos independientes tenemos:
+\begin{align*}
+    P(A\cap A) &= P(A)P(A) \\
+    P(A)&= P(A)^2 
+\end{align*}
+
+esto ocurre cuando $P(A)=0$ $\vee$ $P(A)=1$, ya que $0\leq P(A) \leq 1$. En otras palabras, $A=S$ $\vee$ $A=\varnothing$
+
+b. Como $A$ y $B$ son independientes, entonces $P(A\cap B)=P(A)P(B)$
+
+\begin{align*}
+    P(A^c\cap B^c) &= P((A\cup B)^c)\\
+    &= 1- P(((A\cup B)^c)^c) \\
+    &= 1- P(A\cup B) \\
+    &= 1 - P(A)-P(B)+P(A\cap B),  \ \ \ \ \text{ $A$ y $B$ son independientes} \\
+    &= 1 - P(A)-P(B)+P(A)P(B)\\
+    &= 1 - P(A) - P(B)(1-P(A)) \\
+    &= (1-P(A))(1-P(B)) \\
+    &= P(A^c)P(B^c)
+\end{align*}
+
+# Problem 2
+
+There are 10 men and 12 women in a room. Three of them are selected at random to serve on a committee. Find the probabilities that none, one, two or all three of them are women.
+
+### Solution
+
+Sea $$X: \text{la cantidad de mujeres que hay en el comité}$$
+
+\begin{itemize}
+    \item Si $X=0$, es porque se escogió 3 hombres entre los 10 que hay
+    
+    $$P(X=0)=\dfrac{10}{22}\cdot\dfrac{9}{21}\cdot\dfrac{8}{20}=\dfrac{720}{9240}=\dfrac{6}{77}\approx 0.078$$
+    
+    \item Si $X=1$, es porque se escogió 2 hombres entre los 10 que hay y una mujer entre las 12
+    
+    $$P(X=1)=\dfrac{10}{22}\cdot\dfrac{9}{21}\cdot\dfrac{12}{20}=\dfrac{1080}{9240}=\dfrac{9}{77}\approx 0.117$$
+    
+    \item Si $X=2$, es porque se escogió 1 hombre entre los 10 que hay y 2 mujeres entre las 12
+    
+    $$P(X=2)=\dfrac{10}{22}\cdot\dfrac{12}{21}\cdot\dfrac{11}{20}=\dfrac{1320}{9240}=\dfrac{1}{7}\approx 0.143$$
+    
+    \item Si $X=3$, es porque se escogió 3 mujeres entre las 12
+    
+    $$P(X=3)=\dfrac{12}{22}\cdot\dfrac{11}{21}\cdot\dfrac{10}{20}=\dfrac{1320}{9240}=\dfrac{1}{7}\approx 0.143$$
+\end{itemize}
+
+# Problem 3
+
+Maria flips a fair coin until the first time she gets heads. Let n be the number of flips she needs. If n is an even number Paul flips his coin once, if n is an odd number he flips his coin twice. If we are told that Paul got no heads, what is the probability that Maria got heads on the second try?
+
+### Solution
+
+Sea $$X=\text{cantidad de caras que obtiene Paul}$$
+$$N= \text{el numero de lanzamientos que hace Maria}$$
+ 
+La probabilidad de que Maria saque cara en el segundo intento, sabiendo que Paul nunca saco cara es:
+\begin{align*}
+    P(N=2 \vert X=0) &= \frac{P\left( N=2 \cap X=0\right)}{P(X=0)} \\
+    &= \frac{P\left( X=0 \vert N=2\right)P(N=2)}{P(X=0)} \\
+    &= \frac{P\left( X=0 \vert N=2\right)P(N=2)}{P(X=0\vert N=1)P(N=1) + P(X=0\vert N=2)P(N=2) + \cdots} \\
+    &= \dfrac{\frac{1}{2}\cdot\left( \frac{1}{2}\cdot \frac{1}{2}\right)}{\frac{1}{4} \left(\frac{1}{2}\right) + \frac{1}{2}\left(\frac{1}{2}\right)^2 + \frac{1}{4}\left(\frac{1}{2}\right)^3+ \frac{1}{2}\left(\frac{1}{2}\right)^4 +\cdots} \\
+    &=  \dfrac{\frac{1}{8}}{\left(\frac{1}{2}\right)^3 +  \left(\frac{1}{2}\right)^3 + \left(\frac{1}{2}\right)^5 + \left(\frac{1}{2}\right)^5 + \cdots} \\
+    &=  \dfrac{\frac{1}{8}}{2\left(\frac{1}{2}\right)^3 + 2\left(\frac{1}{2}\right)^5 + 2\left(\frac{1}{2}\right)^7 + \cdots} \\
+    &= \dfrac{\frac{1}{8}}{\left(\frac{1}{2}\right)^2 + \left(\frac{1}{2}\right)^4 + \left(\frac{1}{2}\right)^6 +\cdots} \\
+    &= \dfrac{\frac{1}{8}}{\sum_{n=1}^{\infty}\left(\frac{1}{2}\right)^{2n}} \\
+    &= \dfrac{\frac{1}{8}}{\sum_{n=1}^{\infty}\left(\frac{1}{4}\right)^{n}}\\
+    &= \dfrac{\frac{1}{8}}{\frac{\frac{1}{4}}{1-\frac{1}{4}}} \\
+    &= \dfrac{\frac{1}{8}}{\frac{1}{3}}\\
+    &= \frac{3}{8}
+\end{align*}
+
+# Problem 4
+In this problem a word is any combination of letters, meaningful or not.
+
+a. How many words can be made with the letters a,b,c,d?
+
+b. How many words can be made with the letters a,a,b,c,d?
+
+c. How many words can be made with the letters a,a,b,b,b,c,d,d?
+
+d. How many words can be made with the letters a,a,a,b,b,b,c,d if we never want the same two letters next to each other?
+
+### Solution
+a. Con orden pero sin repetición.
+$$4\cdot 3 \cdot 2 \cdot 1 = 24 \ \mbox{palabras}$$
+
+b. Con orden, con repetición. 
+
+
+Formas de ubicar las 'a': $\binom{5}{2}$
+
+Formas de ubicar la 'b': $\binom{3}{1}$
+
+Formas de ubicar la 'c': $\binom{2}{1}$
+
+Formas de ubicar la 'd': $\binom{1}{1}$
+
+
+Entonces, se pueden formar, 
+$$\binom{5}{2}\binom{3}{1}\binom{2}{1} \binom{1}{1} = 60 \ \mbox{palabras}$$
+
+c. Con orden, con repetición. 
+
+
+Formas de ubicar las 'a': $\binom{8}{2}$
+
+Formas de ubicar las 'b': $\binom{6}{3}$
+
+Formas de ubicar la 'c': $\binom{3}{1}$
+
+Formas de ubicar las 'd': $\binom{2}{2}$
+
+
+Entonces, se pueden formar, 
+$$\binom{8}{2} \binom{6}{3} \binom{3}{1} \binom{2}{2} = 1680 \ \mbox{palabras} $$
+
+d. Sea $S$ el conjunto de maneras de organizar las 8 letras. Entonces 
+
+
+Formas de ubicar las 'a': $\binom{8}{3}$
+
+Formas de ubicar las 'b': $\binom{5}{3}$
+
+Formas de ubicar la 'c': $\binom{2}{1}$
+
+Formas de ubicar la 'd': $\binom{1}{1}$
+
+
+
+$$\vert S \vert=\binom{8}{3}\binom{5}{3}\binom{2}{1}\binom{1}{1}=1120$$
+Definamos los siguientes conjuntos
+
+$$S_a=\{x \in S, \text{ dos letras "a" son consecutivas } \}$$
+$$S_b=\{x \in S, \text{ dos letras "b" son consecutivas } \}$$
+
+Queremos hallar el cardinal de de $\overline{S_a}\cap \overline{S_b}$, es decir, hallar todas las posibles palabras que no tenga dos letras "a" juntas y dos 'b' juntas. 
+
+
+Para $S_a$, notemos que 'aa' la podemos trabajar como si fuera una sola letra, entonces: 
+
+
+Formas de ubicar las 'a' y 'aa': $\binom{7}{2}$
+
+Formas de ubicar las 'b': $\binom{5}{3}$
+
+Formas de ubicar las 'c': $\binom{2}{1}$
+
+Formas de ubicar las 'd': $\binom{1}{1}$
+
+
+$$\vert S_a \vert =\binom{7}{2}\binom{5}{3}\binom{2}{1}\binom{1}{1}=420$$
+
+Pasa lo mismo con $\vert S_b\vert$
+
+Ahora para la interseccion tenemos que:
+
+
+Formas de ubicar las 'aa' y 'a': $\binom{6}{2}$
+
+Formas de ubicar la 'bb' y 'b': $\binom{4}{2}$
+
+Formas de ubicar las 'c': $\binom{2}{1}$
+
+Formas de ubicar las 'd': $\binom{1}{1}$
+
+
+$$\vert S_a \cap S_b \vert=\binom{6}{2}\binom{4}{2}\binom{2}{1}\binom{1}{1}=180$$
+
+
+Por el principio de  inclusión-exclusión tenemos
+
+\begin{align*}
+    \vert\overline{S_a}\cap \overline{S_b}\vert&=\vert S \vert -\vert S_a \vert - \vert S_b \vert+\vert S_a \cap S_b \vert\\
+    &=1120-420-420+180\\
+    &=460
+\end{align*}

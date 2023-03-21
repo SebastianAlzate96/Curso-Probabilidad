@@ -1,0 +1,305 @@
+---
+title: "Midterm"
+author: "Sebastian Alzate Vargas"
+date: "10/10/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Problem 1
+Say $X\sim U\{-3,...,3\}$.
+
+(a) Find the kurtosis of $X$.
+
+(b) Find $var(|X|)$
+
+
+### Solution 
+
+#### (a) 
+
+La kurtosis esta dada por: 
+\begin{align*}
+    \gamma^2 = \dfrac{\kappa_4}{k_2^2} - 3 
+\end{align*}
+
+Donde $\kappa_t$ es el momento central $\kappa^{th}$ de $X$, y que viene dado por: $$\kappa_k = E[(X-\mu)^k]$$
+
+Entonces para eso tenemos que encontrar la función de densidad:
+
+\begin{align*}
+    P(X=k)= \frac{1}{7}
+\end{align*}
+
+
+\noindent hallemos el valor esperado de $X$
+
+\begin{align*}
+    E(X)&= \sum_{x=-3}^{3} \dfrac{x}{7}\\ &= \dfrac{1}{7} \cdot \sum_{x=-3}^{3} x\\ &= \dfrac{1}{7}\cdot0=0
+\end{align*}
+
+
+\noindent Hallemos la Kurtosis, para eso necesitamos el segundo y cuarto momento central de $X$
+
+
+
+
+\begin{align*}
+    \kappa_4 = E[(X-\mu)^4] &= E[X^4]\\ &= \sum_{x=-3}^{3} x^4 \cdot\dfrac{1}{7}\\ &= \dfrac{2}{7}\cdot\sum_{x=1}^{3} x^4\\ &= \dfrac{2}{7}(1+16+81)=28
+\end{align*}
+
+
+\begin{align*}
+   \kappa_2 = E[(X-\mu)^2] &=E[X^2]\\&= \sum_{x=-3}^{3} \dfrac{1}{7}\cdot x^2\\ &= \dfrac{2}{7}\sum_{x=1}^{3} x^2\\ &= \dfrac{2}{7}(1+4+9) = 4 
+\end{align*}
+
+Por lo tanto la kurtosis es: 
+
+\begin{align*}
+    \gamma_2 = \dfrac{28}{4^2} -3 = \dfrac{7}{4} -3=-\dfrac{5}{4}
+\end{align*}
+
+
+#### (b)
+
+\begin{align*}
+    E(|X|) &= \sum_{x=-3}^{3} |x|\cdot \dfrac{1}{7}\\ &= \dfrac{2}{7} \sum_{x=1}^{3} x\\ &= \dfrac{2}{7}(1+2+3) = \dfrac{12}{7}
+\\ \\ \\
+    E(|X|^2)&= \sum_{x=-3}^{3} |x|^2 \cdot \dfrac{1}{7}\\ &= \dfrac{2}{7} \sum_{x=1}^{3} x^2\\&= \dfrac{2}{7}(1+4+9)=4
+\\ \\ \\ 
+     Var(|X|)&= E(|X|^2) - [E(|X|)]^2 \\
+     &= 4 - \left(\dfrac{12}{7}\right)^2 \\
+     &= 4 - \dfrac{144}{49}\\
+     &= \dfrac{52}{49}\approx 1.061
+\end{align*}
+
+## Problem 2
+Say $X\sim Pois(\lambda)$. Find the density, mean and variance of $Y=X|X>0$.
+
+### Solution
+
+Tenemos que $X\sim Pois(\lambda)$. Entonces $E(X)=\lambda$ y $Var(Y)=\lambda$
+
+
+Encontremos primero la función de densidad para $Y$, 
+\begin{align*}
+    f_Y(y)= P(Y=y) &= P(Y=y|X>0) \\ \\
+    &= P(X=y|X>0) \\ \\
+    &= \dfrac{P(X=y, X>0)}{P(X>0)} \\ \\
+    &= \dfrac{\dfrac{e^{-\lambda }\lambda^y}{y!}}{1-P(X=0)} \\ \\
+    &= \dfrac{e^{-\lambda}\lambda^y}{y!(1-e^{-\lambda})} 
+\end{align*}
+
+Para $y=1,2,...$
+
+Encontremos el valor esperado para $Y$
+
+
+\begin{align*}
+    E(Y) &= \sum_{y=1}^{\infty} y\cdot \dfrac{  e^{-\lambda} \lambda^y}{y!(1-e^{-\lambda})} \\
+    &= \dfrac{1}{1-e^{-\lambda}} \sum_{y=0}^{\infty} \dfrac{ y e^{-\lambda} \lambda^y}{y!} \ \ \ \  \textit{es el primer momento de una poison}\\
+     &= \dfrac{1}{1-e^{-\lambda}}E(X)\\
+    &= \dfrac{\lambda}{1-e^{-\lambda}}
+\end{align*}
+
+Podemos encontrar el segundo momento de $Y$
+
+\begin{align*}
+    E(Y^2) &= \sum_{y=1}^{\infty}y^2\cdot \dfrac{  e^{-\lambda} \lambda^y}{y!(1-e^{-\lambda})} \\
+    &= \dfrac{1}{1-e^{-\lambda}} \sum_{y=0}^{\infty} \dfrac{ y^2 e^{-\lambda} \lambda^y}{y!}\ \ \ \  \textit{es el segundo momento de una poison}\\
+    &= \dfrac{1}{1-e^{-\lambda}} E(X^2) \\
+\end{align*}
+
+Por otro lado 
+
+\begin{align*}
+    Var(X)&= E(X^2) - (E(X))^2 \\
+    \lambda&=E(X^2)-\lambda^2\\
+    E(X^2)&= \lambda + \lambda^2 
+\end{align*}
+
+Por lo tanto, reemplanzando en la anterior formula tenemos:
+
+
+\begin{align*}
+    E(Y^2)= \dfrac{\lambda^2+\lambda}{(1-e^{-\lambda})}
+\end{align*}
+
+
+Finalmente 
+
+\begin{align*}
+    Var(Y)&= E(Y^2)-[E(Y)]^2\\
+    &= \dfrac{\lambda^2+\lambda}{(1-e^{-\lambda})} - \dfrac{\lambda^2}{(1-e^{-\lambda})^2}\\
+    &=\dfrac{(\lambda^2+\lambda)(1-e^{-\lambda})-\lambda^2}{(1-e^{-\lambda})^2}\\
+    &=\dfrac{\lambda(1-e^{-\lambda})-\lambda^2e^{-\lambda}}{(1-e^{-\lambda})^2}
+\end{align*}
+
+
+## Problem 3
+Say $X\sim Beta(n+1,1)$. Find a transformation $g$ such that $Y=g(X)\sim Exp(1)$.
+
+### Solution 
+Como $X \sim Beta(n+1,1)$
+
+\begin{align*}
+    f_X(x) &= x^n\dfrac{\Gamma(n+2)}{\Gamma(n+1)\Gamma(1)}\\
+    &= x^n\dfrac{(n+1)!}{n!}\\
+    &= (n+1)x^n
+\end{align*}
+
+Consideremos  $Y = g(X)= - \ln(X^{n+1})$, entonces podemos encontrar la función de distribución de $Y$
+
+
+\begin{align*}
+    F_Y(y) &= P\left(Y \leq y \right) \\
+    &= P\left(-\ln(X^{n+1}) \leq y\right) \\
+     &= P\left(-(n+1)\ln(X) \leq y\right) \\
+    &= P\left(\ln(X) \geq -\dfrac{y}{n+1}\right) \\ 
+    &= 1-P\left(\ln(X) < -\dfrac{y}{n+1}\right) \ \ \ \textit{pues $e$ es creciente}\\ 
+    &= 1- P\left(X < e^{-\dfrac{y}{n+1}}\right) \\
+\end{align*}
+
+
+
+
+
+Entonces
+
+
+\begin{align*}
+    F_Y(y) &= 1 - \int_{0}^{e^{\frac{-y}{n+1}}} x^n (n+1) dx \\
+    &= 1 - x^{n+1}|_{0}^{e^{\frac{-y}{n+1}}} \\
+    &= 1 - (e^{\frac{-y}{n+1}})^{n+1} \\
+    &= 1 -e^{-y}
+\end{align*}
+
+Asi $Y=-\ln X^{n+1} \sim Exp(1)$
+
+## Problem 4
+Say $X\sim Geom(p)$ and $Y|X=k\sim U[-k,k]$
+
+(a) Find the mean and variance of Y.
+
+(b) ind the correlation of X and Y.
+
+### Solution 
+
+#### (a)
+
+
+Tenemos que $X\sim Geom(p)$, entonces
+
+Así $E(X)=\dfrac{1}{p}$, $Var(X)=\dfrac{1-p}{p^2}$
+
+y por otro lado tenemos que $Y|X=k\sim U[-k,k]$. Por teorema 1.9.6 tenemos que 
+
+\begin{align*}
+    E(Y) = E[E(Y|X)]
+\end{align*}
+
+Pero $E(Y|X=k)=\dfrac{-k+k}{2}=0$
+
+Entonces $$E(Y)=E[E(Y|X)] = E\left(0\right) = 0 $$
+Usando nuevamente el teorema 1.9.6
+
+
+\begin{align*}
+Var(Y) &= Var(E(Y|X)) + E(Var(Y|X)) \\ &= Var(0)+E(Var(Y|X))\\ &= E(Var(Y|X))
+\end{align*}
+
+
+\begin{align*}
+    Var(Y|X=k) = \dfrac{(k - (-k))^2}{2} = \dfrac{4k^2}{2} = 2k^2
+\end{align*}
+Luego, 
+
+\begin{align*}
+    E(Var(Y|X))= E( 2X^2)&=2E(X^2)\\&=2 \left(Var(X) + (E(X))^2 \right)\\
+    &= 2 \left(\dfrac{1-p}{p^2} + \dfrac{1}{p^2} \right)\\
+    &= 2 \left(\dfrac{2-p}{p^2} \right)
+\end{align*}
+
+así, 
+
+
+\begin{align*}
+    Var(Y) = \dfrac{2(2-p)}{p^2}
+\end{align*}
+
+#### (b)
+
+Para la correlación tenemos, 
+\begin{align*}
+    \rho(X,Y) = \dfrac{Cov(X,Y)}{\sigma_x \sigma_y}
+\end{align*}
+
+Entonces hallemos primero la covarianza
+
+\begin{align*}
+    Cov(X,Y) &= E(XY) - E(X)E(Y) \\
+    &= E(XY) - \dfrac{1}{p}\cdot0 \\
+    &= E[E(XY|X)] \\
+    &= E[XE(Y|X)] \\
+    &= E[X\cdot0] \\
+    &= 0
+\end{align*}
+
+
+Así
+
+\begin{align*}
+    \rho_{XY}= \dfrac{Cov(X,Y)}{\sigma_{X} \sigma_{Y}} = \dfrac{0}{\sigma_X \sigma_Y} = 0 
+\end{align*}
+
+
+## Problem 5
+In some game a player draws three cards at random from a full deck of 52 cards, and collects as many dollars as the number of aces among the three. Assume he can play the game as often as he wants, and let $S_n$ be his combined winnings after $n$ rounds. Compute the moment generating function of Sn and use it to find the smallest n such $E[S_n]>1$.
+
+### Solution 
+
+Sea $X=$ Cantidad de Ases obtenidas en la baraja de cartas, que es la cantidad de ganancias en ese turno
+
+Definamos $S_i$, la ganancia obtenida en el turno $i$
+
+\begin{align*}
+    &\text{Si saca tres ases}\\ 
+    &\ \ P(X=3)=  \dfrac{\binom{4}{3}}{\binom{52}{3}} = \dfrac{4}{22100} \\ \\
+     &\text{Si saca dos ases}\\ 
+     &\ \ P(X=2) = \dfrac{\binom{4}{2} \binom{48}{1}}{\binom{52}{3}} = \dfrac{288}{22100} \\ \\
+     &\text{Si saca una as}\\ 
+     &\ \ P(X=1) = \dfrac{\binom{4}{1} \binom{48}{2}}{\binom{52}{3}} = \dfrac{4512}{22100} \\ \\
+     &\text{No saca ninguna}\\ 
+    &\ \ P(X=0) = \dfrac{\binom{48}{3}}{\binom{52}{3}} = \dfrac{17296}{22100}
+\end{align*}
+
+notemos que 
+
+$$\dfrac{4+288+4512+4512}{22100}=\dfrac{22100}{22100}=1$$
+
+Por tanto esta bien. La generadora de momentos para las ganancias de una sola ronda es: 
+
+\begin{align*}
+    \psi (t) = \dfrac{1}{22100}\left( 17296 e^{0t} + 4512 e^{1t} + 288 e^{2t} + 4 e^{3t}\right) 
+\end{align*}
+
+Como los juegos son independientes, entonces para $n$ rondas es el producto
+
+\begin{align*}
+     \psi (t) = \left[\dfrac{1}{22100}\left( 17296 + 4512 e^t + 288 e^{2t} + 4 e^{3t}\right) \right]^n
+\end{align*}
+
+Sabemos que: $\psi^1(0)=E(X^1)$, donde $\psi(0)$ viene dado por:
+
+\begin{align*}
+    \psi(0) &= \dfrac{d(E(e^{tX}))}{dt}|_{t=0} \\ \\
+    &= n\left[\dfrac{1}{22100}\left( 17296 + 4512 e^t + 288 e^{2t} + 4 e^{3t}\right) \right]^{n-1}\\& \ \ \ \ \ \ \ \cdot\dfrac{1}{22100}\left(  4512 e^t + 576 e^{2t} + 12 e^{3t}\right)|_{t=0}  \\ \\
+    &= n(1^{n-1})\left(\dfrac{5100}{22100}\right) \\ \\
+    &= n\left(\dfrac{3}{13}\right)
+\end{align*}
+
+Así, $$E(S_n)=\dfrac{3n}{13}$$
+
+
+por lo tanto  si queremos que $E(S_n)>1$ entonces $\dfrac{3n}{13}>1$ lo que es equivalente a $n>\dfrac{13}{3} = 4.33$, por lo tanto tienen que haber más de 5 juegos. 

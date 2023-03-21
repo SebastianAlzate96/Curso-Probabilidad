@@ -1,0 +1,190 @@
+---
+title: "HW 7"
+author: "Sebastian Alzate Vargas"
+date: "8/10/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Problem 1
+Say $(X,Y)$ is a discrete rv with joint pdf $f_{X,Y}(x,y)=(1-p)^2p^x; x,y \in \{0,1,..\}, y \le x, 0<p<1$. Let $U=I(|X-Y|\le 1)$. Find the density of U.
+
+### Solution
+Sea $U=I(|X-Y|\le 1)$ observemos como $y \in \{0,1,...\}$ y $y \le x$ entonces $0 \le x-y$. Asi, $x-y \in \{0,1,...\}$
+\begin{align*}
+    P(U=1)&=P\left(|X-Y| \leq 1\right)\\
+    &=P\left(-1 \leq X-Y \leq 1\right)\\
+    &=P\left(X-Y=-1\right)+P\left(X-Y=0\right)+P\left(X-Y=1\right)\\
+    &=0+P\left(X-Y=0\right)+P\left(X-Y=1\right) \ \ \ \ \text{pues }x\leq y \\
+    &=P\left(X=Y\right)+P\left(X=Y+1\right)\\
+    &=\sum_{x=0}^\infty (1-p)^2p^x  + \sum_{x=1}^\infty (1-p)^2p^x \\
+    &=(1-p)^2\frac1{1-p}+(1-p)^2\frac p{1-p}\\
+    &=1-p + p(1-p)\\
+    &=1-p+p-p^2\\
+    &=1-p^2
+\end{align*}
+
+Entonces,
+
+\begin{align*}
+    P(U=0)&=1-P(U=1)\\
+    &=1-(1-p^2)\\
+    &=p^2
+\end{align*}
+
+## Problem 2
+Let $X\sim U[-1,1]$.
+
+(a) say $Y=1-X^2$. Find the density of $Y$.
+
+(b) say $Y=1-\left(2X-\frac{X}{|X|}\right)^2$. Find the density of $Y$.
+
+
+### Solution
+(a) Tenemos que $X\sim U[-1,1]$. Encontremos la función de distribución de $Y$. Donde $Y=1-X^2$
+\begin{align*}
+    F_Y(y)&=P\left( Y\leq y\right)\\
+    &=P\left( 1-X^2\leq y\right)\\
+    &=P\left( X^2\geq 1-y\right)\\
+    &=1-P\left( X^2< 1-y\right)\\
+    &=1-P\left( -\sqrt{1-y} < X < \sqrt{1-y}\right)\\
+    &=1-\int_{-\sqrt{1-y}}^{\sqrt{1-y}} \dfrac{1}{2} dx\\
+    &=1-\sqrt{1-y}
+\end{align*}
+
+Ahora encontremos la función de densidad, derivando con respecto a $y$
+
+\begin{align*}
+    f_Y(y)=\dfrac{d \ F_Y(y)}{dy}&=\dfrac{d \left[1-\sqrt{1-y}\right]}{dy}\\
+    &=\dfrac{1}{2\sqrt{1-y}}
+\end{align*}
+Para $0\leq y <1$
+
+(b) Definamos 
+$$Z=2X-\dfrac{X}{|X|}$$
+Como $X\sim U[-1,1]$ entonces $-1\le z \le 1$. Así, $F_Z(z)=0$ si $z<-1$ y $F_Z(z)=1$ si $z>1$. Ahora para  $-1\le z \le 1$, tenemos
+
+\begin{align*}
+    F_Z(z)&=P\left(Z\le z \right)\\
+    &=P\left(2X-\dfrac{X}{|X|}\le z \right)\\
+    &=P\left(2X-1\le z \right)\cdot\mathbb{I}_{[0,1]}(x)+P\left(2X+1\le z \right)\cdot\mathbb{I}_{[-1,0]}(x)\\
+    &=P\left(X\le \dfrac{z+1}{2}\right)\cdot\mathbb{I}_{[0,1]}(x)+P\left(X\le \dfrac{z-1}{2} \right)\cdot\mathbb{I}_{[-1,0]}(x)\\
+    &=\dfrac{1}{2}\left(\dfrac{z+1}{2} -0\right)+\dfrac{1}{2}\left(\dfrac{z-1}{2} -(-1)\right)\\
+    &= \dfrac{z+1}{4}+\dfrac{z-1}{4}+\dfrac{1}{2}\\
+    &=\dfrac{z}{2}+\dfrac{1}{2}\\
+    &=\dfrac{z+1}{2}
+\end{align*}
+
+```{r,echo=FALSE}
+library(ggplot2)
+ggplot() +
+  geom_line(aes(c(1,2),c(1,1)),col="red")+
+  geom_line(aes(c(-1,-2),c(0,0)),col="red")+
+  geom_line(aes(c(-1,1),c(0,1)))+
+  theme_classic()+ylab("F(z)")+xlab("z")
+```
+
+
+Notemos que $Z \sim U[-1,1]$.
+
+Nosotros queremos encontrar la función de densidad de $Y$, donde $Y=1-Z^2$ pero podemos usar el item anterior ya que $Z \sim U[-1,1]$
+
+Entonces la función de densidad viene dada por:
+
+$$f_Y(y)=\dfrac{1}{2\sqrt{1-y}}$$
+
+## Problem 3
+Say the random vector $(X,Y)$ has joint density $f(x,y)=\frac1{2\pi}\exp\{-(x^2+y^2)/2\}$. Let $D=\sqrt{X^2+Y^2}$. Find the density of $D$.
+
+Hint: what is the density of $X^2$?
+
+### Solution
+Podemos hallar la marginal de $f_X(x)$ con la densidad conjunta, donde $f(x,y)=\frac1{2\pi}\exp\{-(x^2+y^2)/2\}$
+\begin{align*}
+    f_X(x) &= \int_{-\infty}^\infty f(x,y) dy\\
+    &= \frac1{2\pi}\int_{-\infty}^\infty e^{-\frac{(x^2+y^2)}{2}} dy \\
+    &= \frac1{2\pi}\cdot \sqrt{2\pi}\cdot e^{-\frac{x^2}{2}}\\
+    &= \frac1{\sqrt{2\pi}} \cdot e^{-\frac{x^2}{2}}\\
+\end{align*}
+
+Ahora podemos encontrar la función de distribución de $X^2$
+
+\begin{align*}
+    F_{X^2}(x) &= P(X^2\leq x)\\ &= P(-\sqrt{x}\leq X \leq \sqrt{x}) \\
+    &= \int_{-\sqrt{x}}^{\sqrt{x}} \frac1{\sqrt{2\pi}} \cdot e^{-\frac{t^2}{2}}dt
+\end{align*}
+Entonces, para encontrar la función de densidad de $X^2$ derivamos con respecto a $x$ 
+
+\begin{align*}
+    f_{X^2}(x) = \frac{dF_{X^2}(x)}{dx} &= \frac{d}{dx} \int_{-\sqrt{x}}^{\sqrt{x}} \frac1{\sqrt{2\pi}} \cdot e^{-\frac{t^2}{2}}dt \\
+    &= \frac1{\sqrt{2\pi}} \cdot e^{-\frac{x}{2}}\cdot\frac{1}{2\sqrt{x}} - \frac1{\sqrt{2\pi}} \cdot e^{-\frac{x}{2}}\cdot\frac{-1}{2\sqrt{x}} \\
+    &= \frac{1}{2\sqrt{2\pi x}}(e^{-\frac{x}{2}}+e^{-\frac{x}{2}}) \\
+    &= \frac{1}{\sqrt{2\pi}}\cdot x^{-\frac{1}{2}}\cdot e^{-\frac{x}{2}}
+    \end{align*}
+
+Se hace el procedimiento similar para encontrar $f_Y(y)$ y $f_{Y^2}(y)$, la cual estan dadas por:
+
+$$f_Y(y)=\frac1{\sqrt{2\pi}} \cdot e^{-\frac{y^2}{2}}$$
+
+$$f_{Y^2}(y) = \frac{1}{\sqrt{2\pi}}\cdot y^{-\frac{1}{2}}\cdot e^{-\frac{y}{2}}$$
+Además, podemos notar que $X$, $Y$ son independientes.
+
+$$f(x,y) = \frac1{\sqrt{2\pi}} \cdot e^{-\frac{x^2}{2}}\cdot \frac1{\sqrt{2\pi}} \cdot e^{-\frac{y^2}{2}} = \frac1{2\pi} e^{-\frac{(x^2+y^2)}{2}} = f_X(x)f_Y(y)$$
+
+
+Sea $Z=X^2+Y^2$, como mostramos que $X,Y$ son independientes entonces podemos usar convolución
+\begin{align*}
+    f_Z(z)&=\int_{-\infty}^\infty f_{X^2}(t)f_{Y^2}(z-t)dt\\
+    &=\int_{-\infty}^z\frac{t^{-\frac{1}{2}}}{\sqrt{2\pi}} \cdot e^{-\frac{t}{2}}\frac{(z-t)^{-\frac{1}{2}}}{\sqrt{2\pi}} \cdot e^{-\frac{(z-t)}{2}}dt\\
+    &=\dfrac{e^{-\frac{z}{2}}}{2\pi} \int_{-\infty}^z t^{-\frac{1}{2}}(z-t)^{-\frac{1}{2}}dt\\
+    &=\dfrac{e^{-\frac{z}{2}}}{2\pi} \int_{0}^z t^{-\frac{1}{2}}(z-t)^{-\frac{1}{2}}dt
+\end{align*}
+Sea $u=\sqrt{t}$ entonces $du=\dfrac{1}{2\sqrt{t}}dt$. Entonces
+
+\begin{align*}
+    f_Z(z)&=\dfrac{e^{-\frac{z}{2}}}{2\pi} \int_{0}^z \dfrac{2}{\sqrt{(\sqrt{z})^2-u^2}}du\\
+    &=\dfrac{e^{-\frac{z}{2}}}{2\pi}\cdot 2 \sin^{-1}\dfrac{u}{\sqrt{z}}|_0^z\\
+     &=\dfrac{e^{-\frac{z}{2}}}{2\pi}\cdot 2 \sin^{-1}\dfrac{\sqrt
+     t}{\sqrt{z}}|_0^z\\
+    &=\dfrac{e^{-\frac{z}{2}}}{\pi}\cdot  \left(\dfrac{\pi}{2}-0\right)\\
+    &=\dfrac{e^{-\frac{z}{2}}}{2}
+\end{align*}
+
+
+Encontremos la función de distribución de $D$ donde $D=\sqrt{X^2+Y^2}$
+
+\begin{align*}
+    F_D(\delta) = P(D\leq \delta) &= P(\sqrt{X^2+Y^2}\leq \delta) \\
+    &= P(X^2+Y^2\leq \delta^2) \\
+    &= \int_0^{\delta^2} \frac{e^{-\frac{t}{2}}}{2}dt \\
+    &= - e^{-\frac{z}{2}}|_0^{\delta^2} \\
+    &= -e^{-\frac{\delta^2}{2}}+1
+\end{align*}
+
+Finalmente, derivamos con respecto a $\delta$ para encontrar la función de densidad de $D$
+
+\begin{align*}
+    f_{D}(\delta) &= \frac{dF_{D}(\delta)}{d\delta}\\ 
+    &= \frac{d}{d\delta} \left(-e^{-\frac{\delta^2}{2}}+1\right)\\
+    &=  -\frac{1}{2}\left(-e^{-\frac{\delta^2}{2}}\right)2\delta\\
+    &= \delta e^{-\frac{\delta^2}{2}}
+\end{align*}
+
+## Problem 4
+Let $X,Y$ be independent rv’s with $P(X=k)=P(Y=k)=\frac1N$, $k=1,...,N; N\ge 2$. Let $M=min\{X,Y\}$. Find the density of $M$.
+
+
+### Solution
+Como $P(X=k)=P(Y=k)=\frac1N$ entonces $F_Y(k)=F_X(k)=P(Y\leq k)=P(X\leq k)=\dfrac{k}{N}$
+
+Como $X,Y$ son iid entonces por teorema 1.11.20 tenemos que: 
+
+\begin{align*}
+    f_{X_{(1)}}(k)&=\frac{2!}{(1-1)!(2-1)!}F(k)^{1-1}(1-F(k))^{2-1}f(k)\\
+f_{X_{(1)}}(k)&=2(1-F(k))f(k)\\
+f_{X_{(1)}}(k)&=2\left(1-\dfrac{k}{N}\right)\dfrac{1}{N}\\
+f_{X_{(1)}}(k)&=\dfrac{2(N-k)}{N^2}
+\end{align*}
+
+Así, el $M=\min\{X,Y\}=\dfrac{2(N-k)}{N^2}$

@@ -1,0 +1,339 @@
+---
+title: "Tarea 2"
+author: "Sebastian Alzate Vargas"
+date: "23/9/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Problem 1
+Say the random variable $X$ has density $f(x)=c/x^k$, $x=1,2,3,...$ ; $k=2,3$ or $4$. Find the mean and the variance of $X$.
+
+#### Solution
+Hallemos el $m^{th}$ momento de $X$
+\begin{align*}
+    E(X^m)&=\sum_{x=1}^\infty x^m \cdot f(x)\\
+    &= \sum_{x=1}^\infty x^m \cdot \dfrac{c}{x^k}\\
+    &= \sum_{x=1}^\infty  \dfrac{c}{x^{k-m}}\\
+\end{align*}
+
+Notemos lo siguiente: 
+
+\begin{itemize}
+    \item Si $k-m=1$ es una serie armónica, la cual diverge
+    \item Si $k-m<1$ la serie diverge
+    \item Si $k-m>1$ la serie converge, es una serie $p$
+\end{itemize}
+
+Ahora usemos los valores de $k=2,3$ y $4$
+
+\begin{itemize}
+    \item Si $k=2$ entonces $2-m>1$. Así, $m<1$ para que la serie converja, solo puedo encontrar el momento cero (Se puede hallar constante)
+\end{itemize}
+
+\begin{align*}
+    E(X^0)&=\sum_{x=1}^\infty  \dfrac{c}{x^{k-0}}\\
+    &=\sum_{x=1}^\infty  \dfrac{c}{x^{2}}
+\end{align*}
+
+Esa sumatoria no la podemos encontrar analiticamente, vamos a proceder numericamente.
+
+```{r}
+x <- c(1:10000)
+suma <- function(k){
+    sum(1/(x^k))
+}
+```
+Como $k=2$ entonces
+```{r}
+suma(2)
+```
+Entonces 
+
+```{r}
+c <- 1/suma(2)
+cat('c es igual a:', c)
+```
+
+
+\begin{itemize}
+   \item Si $k=3$ entonces $3-m>1$. Así, $m<2$ para que la serie converja, solo puedo encontrar el hasta el momento uno (Se puede hallar constante y esperanza)
+\end{itemize}
+
+
+\begin{align*}
+    E(X^0)&=\sum_{x=1}^\infty  \dfrac{c}{x^{k-0}}\\
+    &=\sum_{x=1}^\infty  \dfrac{c}{x^{3}}
+\end{align*}
+
+```{r}
+suma(3)
+c <- 1/suma(3)
+cat('el valor de c es:',c)
+```
+
+\begin{align*}
+    E(X^1)&=\sum_{x=1}^\infty  \dfrac{c}{x^{k-1}}\\
+    &=\sum_{x=1}^\infty  \dfrac{c}{x^{2}}
+\end{align*}
+
+```{r}
+cat('El valor esperado:', c*suma(2))
+```
+
+
+\begin{itemize}
+   \item Si $k=4$ entonces $4-m>1$. Así, $m<3$ para que la serie converja, solo puedo encontrar el hasta el momento dos (Se puede hallar constante, esperanza y varianza)
+\end{itemize}
+
+\begin{align*}
+    E(X^0)&=\sum_{x=1}^\infty  \dfrac{c}{x^{k-0}}\\
+    &=\sum_{x=1}^\infty  \dfrac{c}{x^{4}}
+\end{align*}
+
+
+```{r}
+suma(4)
+c <- 1/suma(4)
+cat('el valor de c es:',c)
+```
+
+\begin{align*}
+    E(X^1)&=\sum_{x=1}^\infty  \dfrac{c}{x^{k-1}}\\
+    &=\sum_{x=1}^\infty  \dfrac{c}{x^{3}}
+\end{align*}
+
+```{r}
+cat('El valor esperado:', c*suma(3))
+```
+
+\begin{align*}
+    E(X^2)&=\sum_{x=1}^\infty  \dfrac{c}{x^{k-2}}\\
+    &=\sum_{x=1}^\infty  \dfrac{c}{x^{2}}
+\end{align*}
+
+```{r}
+cat('El segundo momento es:', c*suma(2))
+```
+Por tanto,
+
+$$Var(X)=E(X^2)-\left[E(X) \right]^2$$
+```{r}
+cat('La varianza es igual a:', c*suma(2)-(c*suma(3))^2)
+```
+
+
+## Problem 2
+Let $X$ be a random variable with density $f(x)=c/x^a$ ; $x>1$, and $a$ any real number for which $f$ is a density. Find the mean and the variance of $X$.
+
+#### Solution
+Veamos lo siguiente: 
+
+\begin{align*}
+     \int_{-\infty}^\infty f(x) dx &= \int_{1}^\infty \dfrac{c}{x^a} dx
+ \end{align*}
+ 
+Para que $f$ sea una densidad se tiene que $a>1$. 
+
+Enontremos $k^{th}$ momento de $X$
+
+Entonces para $a\neq k+1$. Tenemos
+\begin{align*}
+    E[X^k]    &= \int_{-\infty}^{\infty} x^k f(x) dx \\
+    &= \int_1^\infty x^k \dfrac{c}{x^a} dx \\
+    &= \int_1^\infty  \dfrac{c}{x^{a-k}} dx \\
+    &= \dfrac{c}{-a+k+1}x^{-a+k+1}\vert_1^\infty
+\end{align*}
+
+\begin{itemize}
+    \item Si $a>k+1$  entonces
+ $$E[X^k]=\dfrac{-c}{-a+k+1}$$
+ \item Si $a< k+1$ entonces
+ $$E[X^k]=\infty$$
+ \item  Para $a=k+1$ tenemos 
+ \begin{align*}
+     E[X^k]&= \int_1^\infty  \dfrac{c}{x} dx\\
+     &=c\ln x \vert_1^\infty\\
+     &= \infty
+ \end{align*}
+\end{itemize}
+
+ 
+ 
+
+Para el momento cero necesitamos que $a>0+1=1$, para que la integral exista
+
+ \begin{align*}
+     1=E[X^0]&=\dfrac{-c}{-a+0+1}\\
+     &=\dfrac{-c}{-a+1}
+ \end{align*}
+Así, $c=a-1$
+
+Para el primer momento necesitamos que $a>1+1=2$, para que la integral exista
+
+\begin{align*}
+     E[X^1]&=\dfrac{-c}{-a+1+1}\\&=\dfrac{1-a}{-a+1+1}\\&=\dfrac{1-a}{2-a}
+\end{align*}
+
+Para el segundo momento necesitamos que $a>2+1=3$
+
+\begin{align*}
+     E[X^2]&=\dfrac{-c}{-a+2+1}\\
+     &=\dfrac{1-a}{-a+2+1}\\
+     &=\dfrac{1-a}{3-a}
+\end{align*}
+Entonces para encontrar la varianza necesitamos que $a>3$, la cual esta dada por:
+\begin{align*}
+    var(X)&=E[X^2]-(E[X])^2\\
+    &=\dfrac{1-a}{3-a}-\left( \dfrac{1-a}{2-a}\right)^2\\
+    &=\frac{1-a}{\left(3-a\right)\left(2-a\right)^2}
+\end{align*}
+
+## Problem 3
+Let $X$ be a ramdon variable with density $f(x)=6x(1-x)$;$0<x<1$. Find the skewness and the kurtosis of $X$.
+
+#### Solution
+Veamos que $f(x)$ es una función de densidad
+$$\int_{-\infty}^\infty f(x) dx= \int_{0}^1 6x(1-x) dx=(3x^2-2x^3)_0^1=1$$
+
+Tenemos que hallar lo siguiente para encontrar skewness of $X$.
+$$\gamma_1 = \dfrac{\kappa_3}{\kappa_2 ^{3/2}}$$
+donde el $k^{th}$ momento central, que esta dado por: $\kappa_k = E[(X-\mu)^k]$
+
+Encontremos primero $\mu$
+
+\begin{align*}
+    \mu=E[x]&=\int_{-\infty}^\infty xf(x) dx\\
+    &= \int_0^1 x\cdot 6x(1-x) dx\\
+    &= \int_0^1 6x^2-6x^3 dx\\
+    &= \left(2x^3-\frac{3}{2}x^4 \right)_0^1\\
+    &= 2-\frac{3}{2}\\
+    &= \frac{1}{2}
+\end{align*}
+
+El segundo momento central es:
+
+\begin{align*}
+    \kappa_2=E[(X-\mu)^2]&=\int_{-\infty}^\infty \left(x-\frac{1}{2}\right)^2\cdot f(x) dx\\
+    &=\int_0^1 \left(x-\frac{1}{2}\right)^2\cdot 6x(1-x) dx\\
+    &= \int_0^1 \left(x^2-x+\frac{1}{4}\right)6x\left(1-x\right) dx\\
+    &= \int_0^1 -6x^4+12x^3-\frac{15x^2}{2}+\frac{3x}{2} dx\\
+    &=\left(-\frac{6x^5}{5}+3x^4-\frac{5x^3}{2}+\frac{3x^2}{4} \right)_0^1\\
+    &= -\frac{6}{5}+3-\frac{5}{2}+\frac{3}{4}\\
+    &= 0.05
+\end{align*}
+
+El tercer momento central es:
+
+\begin{align*}
+    \kappa_3=E[(X-\mu)^3]&=\int_{-\infty}^\infty \left(x-\frac{1}{2}\right)^3\cdot f(x) dx\\
+    &=\int_0^1 \left(x-\frac{1}{2}\right)^3\cdot 6x(1-x) dx\\
+    &= \int_0^1 \left(x^3-\frac{3x^2}{2}+\frac{3x}{4}-\frac{1}{8}\right)6x\left(1-x\right) dx\\
+    &= \int_0^1 -6x^5+15x^4-\frac{27x^3}{2}+\frac{21x^2}{4}-\frac{3x}{4} dx\\
+    &=\left(-x^6+3x^5-\frac{27x^4}{8}+\frac{7x^3}{4}-\frac{3x^2}{8} \right)_0^1\\
+    &= -1+3-\frac{27}{8}+\frac{7}{4}-\frac{3}{8}\\
+    &= 0
+\end{align*}
+
+Entonces skewness de $X$ es: $$\gamma_1 = \dfrac{\kappa_3}{\kappa_2 ^{3/2}}=\dfrac{0}{0.05^{3/2}}=0$$
+
+ Para la kurtosis necesitamos el cuarto momento central $\kappa_4$
+ 
+\begin{align*}
+    \kappa_4=E[(X-\mu)^4]&=\int_{-\infty}^\infty \left(x-\frac{1}{2}\right)^4\cdot f(x) dx\\
+    &=\int_0^1 \left(x-\frac{1}{2}\right)^4\cdot 6x(1-x) dx\\
+    &= \int_0^1 \left(x^4-2x^3+\frac{3x^2}{2}-\frac{x}{2}+\frac{1}{16}\right)6x\left(1-x\right) dx\\
+    &=-\frac{3}{8}\left(\frac{16x^7}{7}-8x^6+\frac{56x^5}{5}-{8x^4}+{3x^3}-\frac{x^2}{2} \right)_0^1\\
+    &= -\frac{3}{8}\left(\frac{16}{7}-8+\frac{56}{5}-{8}+{3}-\frac{1}{2} \right)_0^1\\
+    &= 0.005
+\end{align*}
+
+Entonces la kurtosis de $X$ es: 
+$$\gamma_2 = \dfrac{\kappa_4}{\kappa_2^2}-3=\dfrac{0.005}{0.05^2}-3=-1$$ 
+
+Como $\gamma_2<0$ es  platykurtic, lo que significa que hay poca concentración de datos en la media
+
+
+## Problem 4
+Say $(X,Y)$ is a random vector with joint density proportional to $g(x,y)=(x+1)y^x$ ; $0<y<1$ ; $x=1,2,3$. Find the correlation of $X$ and $Y$.
+
+
+#### Solution
+$Y$ es una variable continua y $X$ una variable discreta. Veamos primero si es una función de densidad. Como es proporcional, existe un constante $c$ tal que: $f(x,y) = c\cdot g(x,y) = c(x+1)y^x$.
+\begin{align*}
+    1= \sum_{x=1}^3\int_0^1 c(x+1)y^xdy &= c\sum_{x=1}^3(x+1)\int_0^1 y^xdy \\
+    &= c\sum_{x=1}^3(x+1)\frac{y^{x+1}}{x+1}|_0^1 \\
+    &= c\sum_{x=1}^3(x+1)\frac{1}{x+1} \\
+    &=3c
+\end{align*}
+Entonces, $c=\dfrac{1}{3}$.
+
+La correlación esta dada por: 
+
+$$corr(X,Y) = \dfrac{cov(X,Y)}{\sigma_X \sigma_Y}$$
+
+donde covarianza es igual a :
+
+$$cov(X,Y) = E[XY] - E[X]E[Y]$$
+
+
+
+Hallemos las marginales,
+\begin{align*}
+    f_X(x) = \int_{-\infty}^\infty f(x,y)dy &= \int_{0}^1 \frac{1}{3}(x+1)y^xdy \\
+    &= \frac{1}{3}(x+1) \frac{y^{x+1}}{x+1}|_0^1 \\
+    &= \frac{1}{3}
+\end{align*}
+
+\begin{align*}
+    f_Y(y) = \sum_{x=1}^3 f(x,y) &= \sum_{x=1}^3 \frac{1}{3}(x+1)y^x \\
+    &= \frac{1}{3}(2y+3y^2+4y^3)
+\end{align*}
+
+
+
+Hallemos $E(X)$,$E(X^2)$, $Var(X)$ y $\sigma_X$
+
+\begin{align*}
+    E(X) &= \sum_{x=1}^3 xf_X(x) = \frac{1}{3}(1+2+3) = 2 \\ \\
+    E(X^2) &= \sum_{x=1}^3 x^2f_X(x) = \frac{1}{3}(1+4+9) = \frac{14}{3} \\ \\
+    Var(X) &= E(X^2)-E(X)^2 = \frac{14}{3}- 2^2 = \frac{2}{3} \\ \\
+    \sigma_X &= \sqrt{\frac{2}{3}}
+\end{align*}
+
+
+Hallemos $E(Y)$,$E(Y^2)$, $Var(Y)$ y $\sigma_Y$
+
+\begin{align*}
+    E(Y) &= \int yf_Y(y) dy \\
+    &= \int_0^1 y\frac{1}{3}(2y+3y^2+4y^3) dy \\
+    &= \frac{133}{180} \\ \\
+    E(Y^2) &= \int y^2f_Y(y) dy \\
+    &= \int_0^1 y^2\frac{1}{3}(2y+3y^2+4y^3) dy \\
+    &= \frac{53}{90} \\ \\
+     Var(Y) &= E(Y^2)-E(Y)^2 = \frac{53}{90} - \left(\frac{133}{180}\right)^2 = \frac{1391}{32400} \\
+    \sigma_Y &= \sqrt{\frac{1391}{32400}} = \frac{\sqrt{1391}}{180}\\
+\end{align*}
+
+Hallemos $E(XY)$
+
+\begin{align*}
+    E(XY) &= \sum_{x=1}^3\int_0^1 xy\cdot \frac{1}{3}(x+1)y^xdy \\
+    &= \frac{1}{3}\sum_{x=1}^3x(x+1)\int_0^1 y^{x+1}dy \\
+    &= \frac{1}{3}\sum_{x=1}^3x(x+1)\frac{y^{x+2}}{x+2}|_0^1 \\
+    &= \frac{1}{3}\sum_{x=1}^3\frac{x(x+1)}{x+2} \\
+    &= \frac{137}{90}
+\end{align*}
+
+La covarianza con los datos encontrados es:
+
+$$cov(X,Y) = E[XY] - E[X]E[Y] = \dfrac{137}{90}-2\cdot\dfrac{133}{180}=\dfrac{2}{45}$$
+
+Finalmente la correlación es:
+
+\begin{align*}
+    cor(X,Y) &=  \dfrac{cov(X,Y)}{\sigma_X \sigma_Y} \\
+    &= \frac{2/45}{\sqrt{2/3}\cdot \sqrt{1391}/180} \\
+    &\approx 0.263
+\end{align*}

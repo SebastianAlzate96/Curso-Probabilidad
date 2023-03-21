@@ -1,0 +1,98 @@
+---
+title: "HW 1"
+author: "Sebastian Alzate Vargas"
+date: "26/8/2021"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+
+# Problem 1
+Give a rigorous mathematical proof of: $$A \cup (B \cap A^c)=A \cup B$$
+
+### Solution
+Supongamos que $x\in A\cup B$, entonces $x\in A$ $\vee$ $x\in B$
+
+Notemos que: $A \subseteq A \cup (B \cap A^c)$ y $B \cap A^c \subseteq A \cup (B \cap A^c)$
+
+\begin{itemize}
+    \item Si $x \in A$ $\Longrightarrow$ $x \in A\cup \left(B \cap A^c \right)$
+    \item Si $x \in B$ $\wedge$ $x\notin A$ $\Longrightarrow$ $x \in B$ y $x\in A^c$, por lo tanto $x\in B\cap A^c$, así $x \in A\cup \left(B \cap A^c \right)$
+\end{itemize}
+ 
+ Lo cual se obtiene que: $A \cup B \subseteq A \cup (B \cap A^c)$
+
+ Ahora supongamos que si $x\in A \cup (B \cap A^c)$, entonces $x\in A$ $\vee$ $x\in B \cap A^c$
+ 
+Notemos que: $A \subseteq A \cup B$ y $B \subseteq A \cup B$ 
+ 
+\begin{itemize}
+    \item Si $x \in A$ $\Longrightarrow$ $x \in A\cup B$
+    \item Si $x \in B \cap A^c$ $\Longrightarrow$ $x \in B$, así $x\in A\cup B$
+\end{itemize}
+ 
+ Lo cual se obtiene que: $A \cup (B \cap A^c) \subseteq A \cup B$
+ 
+ Por tanto, $A \cup B = A \cup (B \cap A^c)$
+ 
+ 
+ 
+# Problem 2
+ Give a mathematically correct proof of Boole’s inequality
+ 
+ Let $A_1 ,..,A_n$ be a (finite) collection of sets, then $$P\left( \bigcup^n_{i=1} A_i \right)  \le   \sum^n_{i=1} P(A_i )$$
+ 
+### Solution
+Procedamos por inducción matemática
+
+Paso base: $$P(A_1\cup A_2)=P(A_1)+P(A_2)-P(A_1\cap A_2)\leq P(A_1)+P(A_2)$$
+Pues, $P(A_1\cap A_2)\ge 0$
+
+Entonces, $$P\left( \bigcup^2_{i=1} A_i \right)  \le   \sum^2_{i=1} P(A_i )$$
+
+Paso inductivo: Supongamos que se cumple para $n=k$. Entonces se cumple que: $$P\left( \bigcup^k_{i=1} A_i \right)  \le   \sum^k_{i=1} P(A_i )$$
+
+Ahora probemos para $n=k+1$,
+
+\begin{align*}
+    P\left( \bigcup^{k+1}_{i=1} A_i \right)  &= P\left( \bigcup^{k}_{i=1} A_i \cup A_{k+1} \right) \\
+    &\le P\left( \bigcup^{k}_{i=1} A_i \right) + {P}(A_{k+1})\ \ \ \ \mbox{(Paso base)}\\
+    &\le \sum^{k}_{i=1} P\left( A_i \right) + {P}(A_{k+1})\ \ \ \ \mbox{(Paso inductivo)} \\
+    &=\sum^{k+1}_{i=1} P(A_i)
+\end{align*}
+
+Lo cual se cumple la desigualdad
+
+# Problem 3
+A box contains 20 blue balls and 10 green balls. Define appropriate sample spaces and events and use them to find
+
+a. the probability to select a blue ball from the box.
+
+b. the probability to select (in one move) a blue ball and a green ball.
+
+### Solution
+
+a. Definamos el espacio muestral de sacar una bola en un intento de la caja.
+
+Espacio muestral: $$S=\{\text{Bola roja} \ , \ \text{Bola azul} \}$$
+
+Eventos: 
+
+$$A: \text{Sacar una bola azul de la caja}$$
+
+$$V: \text{Sacar una bola verde de la caja}$$
+
+La probabilidad de sacar una bola azul viene dada por:
+
+$P(A)=\dfrac{\text{Casos favorables}}{\text{Casos posibles}}=\dfrac{\#\text{ de bolas azules}}{\text{Total de bolas}}=\dfrac{20}{20+10}=\dfrac{20}{30}=\dfrac{2}{3}$
+
+b. Definamos el espacio muestral de sacar dos bolas en un intento de la caja.
+
+Espacio muestral: $$S=\{\text{Bola azul - Bola verde} \ , \ \text{Bola azul - Bola azul} \ , \ \text{Bola verde - Bola verde}\}$$
+
+Evento: 
+
+$$X: \text{Sacar una bola azul y verde de la caja en un mismo turno}$$
+
+$P(X)=\dfrac{\text{Casos favorables}}{\text{Casos posibles}}=\dfrac{\binom{20}{1}\binom{10}{1}}{\binom{30}{2}}=\dfrac{20*10}{435}=\dfrac{200}{435}=\dfrac{40}{87}\approx 0.4598$

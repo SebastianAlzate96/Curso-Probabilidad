@@ -1,0 +1,214 @@
+---
+title: "HW 8"
+author: "Sebastian Alzate Vargas"
+date: "19/10/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Problem 1
+Let $X_1,...,X_{10}\sim N(10, 3)$, all independent. Find
+
+(a) $P(X_1>13)$
+
+(b) $P(X_1+X_2>26)$
+
+(c) $P(\sum_{i=1}^{ 10}X_i>130)$
+
+### Solution
+
+(a) Sabemos que $X_1\sim N(10, 3)$
+\begin{align*}
+    P\left(X_1 >13 \right)&=1-P\left(X_1 \le 13 \right)\\
+    &=\int_{-\infty}^{13}\frac1{\sqrt{2\pi\cdot 3^2}} \exp \left\{ -\frac12 \left(\frac{x-10}{3}\right)^2\right\}dx\\
+    &=1-pnorm(13,10,3)
+\end{align*}
+
+```{r}
+cat('=',1-pnorm(13,10,3))
+```
+
+
+(b) Como $X_1\sim N(10,3)$, $X_2\sim N(10,3)$ y son idependientes, entonces por teorema 2.3.7 tenemos que $Z=X_1+X_2\sim N(10+10,\sqrt{3^2+3^2})$.
+
+\begin{align*}
+    P\left(Z >26 \right)&=1-P\left(Z \le 26 \right)\\
+    &=1-P\left(X_1+X_2 \le 26 \right)\\
+    &=\int_{-\infty}^{26}\frac1{\sqrt{2\pi\cdot (3\sqrt{2})^2}} \exp \left\{ -\frac12 \left(\frac{z-20}{3\sqrt{2}}\right)^2\right\}dz\\
+    &=1-pnorm(26,20,3\sqrt{2})
+\end{align*} 
+
+
+```{r}
+cat('=',1-pnorm(26,20,3*sqrt(2)))
+```
+
+(c) Sea $X_i\sim N(\mu_i,\sigma_i)$ para $i=1,...,n$. Del teorema 2.3.7 tenemos que  $X_1+X_2\sim N(\mu_1+\mu_2,\sqrt{\sigma_1^2+\sigma_2^2})$, entonces para $Z=X_1+X_2+X_3$, podemos aplicar nuevamente el teorema
+
+\begin{align*}
+    X_1+X_2+X_3 &\sim N\left(\mu_1+\mu_2+\mu_3, \sqrt{\left(\sqrt{\sigma_1^2+\sigma_2^2}\right)^2+\sigma_3^2}\right)\\
+    X_1+X_2+X_3 &\sim N\left(\mu_1+\mu_2+\mu_3, \sqrt{\sigma_1^2+\sigma_2^2+\sigma_3^2}\right)
+\end{align*}
+
+Si lo hacemos de forma interactiva, tenemos:
+
+\begin{align*}
+    \sum_{i=1}^{n} X_i \sim N\left(\sum_{i=1}^n \mu_i \ ,\  \sqrt{\sum_{i=1}^{n} \sigma_i^2} \right)
+\end{align*}
+
+Para nuestro caso es 
+
+\begin{align*}
+    \sum_{i=1}^{10} X_i &\sim N\left(\sum_{i=1}^{10} 10 \ ,\  \sqrt{\sum_{i=1}^{10} 3^2} \right)\\
+    \sum_{i=1}^{10} X_i &\sim N\left(100 \ ,\  3\sqrt{10} \right)
+\end{align*}
+
+Entonces,
+
+\begin{align*}
+    P\left(\sum_{i=1}^{ 10}X_i>130\right)&=1-P\left(\sum_{i=1}^{ 10}X_i\le130\right)\\ \\
+    &=1-pnorm(130,100,3\sqrt{10})
+\end{align*}
+
+```{r}
+cat('=',1-pnorm(130,100,3*sqrt(10)))
+```
+
+
+
+## Problem 2
+Say $(X,Y)$ has a bivariate normal distribution with $\mu_x=1,\mu_y=2,\sigma_x^2=5,\sigma_y^2=7$ and $\rho=-0.3$. Find $E[XY]$.
+
+### Solution
+La $corr(XY)$ esta dado por 
+\begin{align*}
+    corr(XY) &= \frac{cov(X,Y)}{\sigma_x\sigma_y}\\
+    \sigma_x\sigma_y corr(XY)&=cov(X,Y)\\
+    \sigma_x\sigma_y corr(XY)&= E(XY)-E(X)E(Y)\\
+     E(XY) &= corr(XY)\sigma_x\sigma_y+E(X)E(Y)\\
+      E(XY) &= (-0.3)(\sqrt{5})(\sqrt{7})+(1)(2) \\
+      E(XY)&= 0.22517
+\end{align*}
+
+
+
+## Problem 3
+Let $(X,Y,Z)$ have a multivariate normal distribution with mean vector $\mu=(1\ 0\ 1)^T$ and variance-covariance matrix
+$$\pmb{\Sigma} =
+\begin{pmatrix}
+5  &  2&  0\\
+2  & 7 & 2 \\
+0  & 2 &  10\\
+\end{pmatrix}$$
+
+(a) $P(X<3)$
+
+(b) $P(X+Y<3)$
+
+(c) $P(X+Y+Z<3)$
+
+(d) $P(X<3|Y=1)$
+
+(e) $P(X<Y)$
+
+
+### Solution
+
+(a) Como (X,Y,Z) es multivariado normal, se tiene que $X \sim N(1,\sqrt{5})$, por teorema 2.3.19. Luego,
+
+\begin{align*}
+    P(X<3) &=\int_{-\infty}^3\frac1{\sqrt{2\pi\cdot 5}} \exp \left\{ -\frac12 \left(\frac{x-1}{\sqrt{5}}\right)^2\right\}dx\\
+    &=pnorm(3,1,\sqrt{5})
+\end{align*}
+
+
+```{r}
+cat('=',pnorm(3,1,sqrt(5)))
+```
+
+
+(b) Tenemos que $X \sim N(1,\sqrt{5})$ y $Y \sim N(0,\sqrt{7})$. Entonces $(X,Y)$ es bivariado, luego por teorema 2.3.16. $X+Y$ es normal, con los siguientes parámetros
+\begin{align*}
+    X + Y &\sim N\left( \mu _1 + \mu _2 ,\sqrt{ \sigma _1 ^2+ \sigma _2 ^2+2 \sigma _1 \sigma _2 \rho }\right)\\
+    X + Y &\sim N\left( 1 + 0 ,\sqrt{ 5+ 7+2 \cdot 2 }\right)\\
+    X + Y &\sim N\left( 1 ,\sqrt{ 16 }\right)\\
+    X + Y &\sim N\left( 1 ,4\right)
+\end{align*}
+
+Entonces, 
+
+\begin{align*}
+    P(X+Y<3) &= \int_{-\infty}^3\frac1{\sqrt{2\pi\cdot 16}} \exp \left\{ -\frac12 \left(\frac{x-1}{4}\right)^2\right\}dx\\
+    &=pnorm(3,1,4)
+\end{align*}
+
+```{r}
+cat('=',pnorm(3,1,4))
+```
+
+
+(c) Tenemos que $X + Y \sim N\left( 1 ,4\right)$ y $Z\sim N(1,\sqrt{10})$. Es claro que, $X+Y+Z$ es normal, con parámetros,
+\begin{align*}
+    E(X+Y+Z) &= E(X+Y) + E(Z) = 1 + 1 = 2 \\ \\
+    Var(X+Y,Z) &= Var(X+Y) + Var(Z) + 2cov(X+Y,Z) \\
+    &= 4^2+10+2cov(X,Z)+2cov(Y,Z)\cdot\\
+    &= 26+2\cdot0+2\cdot2\\
+    &= 30
+\end{align*}
+
+
+
+Así, $X+Y+Z \sim N(2,\sqrt{30})$. Finalmente,
+\begin{align*}
+    P(X+Y+Z<3) &= \int_{-\infty}^3\frac1{\sqrt{2\pi\cdot 30}} \exp \left\{ -\frac12 \left(\frac{x-2}{\sqrt{30}}\right)^2\right\}dx\\
+    &= pnorm(3,2,\sqrt{30})
+\end{align*}
+
+```{r}
+cat('=',pnorm(3,2,sqrt(30)))
+```
+
+(d) Sabemos que  $(X,Y)$ es normal bivariado. Aplicando el teorema 2.3.16 tenemos:
+
+\begin{align*}
+    X|Y=y &\sim N\left( \mu _1 + \rho ( \sigma _1 / \sigma _2 )(y- \mu _2 ), \sigma _1 \sqrt{1- \rho ^2}\right) \\
+    X|Y=y &\sim N\left( 1 + \frac{2}{\sqrt{5}\sqrt{7}} ( \sqrt{5} / \sqrt{7} )(y- 0 ), \sqrt{5} \sqrt{1- \left(\frac{2}{\sqrt{5}\sqrt{7}}\right)^2}\right) \\
+     X|Y=y &\sim N\left( \frac{9}{7}y, \frac{\sqrt{217}}{7}\right) \\
+\end{align*}
+
+Entonces,
+
+\begin{align*}
+    P(X<3 | Y=1) &= \int_{-\infty}^3\frac1{\sqrt{2\pi\cdot \frac{217}{7^2}}} \exp \left\{ -\frac12 \left(\frac{x-\frac{9}{7}}{\frac{\sqrt{217}}{7}}\right)^2\right\}dx\\
+    &= pnorm(3,9/7,\sqrt{217}/7)
+\end{align*}
+
+
+```{r}
+cat('=',pnorm(3,9/7,sqrt(217)/7))
+```
+
+(e)  $X \sim N(1,\sqrt{5})$ y $Y \sim N(0,\sqrt{7})$, entonces $X-Y$ es normal, y por teorema 2.3.21 $(X,Y)$ es bivariado. Luego,
+
+\begin{align*}
+    E(X-Y) &= E(X)-E(Y) = 1-0 = 1 \\ \\
+    var(X-Y) &= var(X)+var(-Y)+2cov(X,-Y) \\
+    &= var(X)+var(Y)-2cov(X,Y) \\
+    &= 5+7-2\cdot2 \\
+    &= 8
+\end{align*}
+
+Finalmente, $X - Y \sim N\left( 1 ,\sqrt{8}\right)$
+
+Luego,
+
+\begin{align*}
+    P(X<Y) &= P(X-Y < 0) \\
+    &= \int_{-\infty}^0\frac1{\sqrt{2\pi\cdot 8}} \exp \left\{ -\frac12 \left(\frac{x-1}{\sqrt{8}}\right)^2\right\}dx\\
+    &= pnorm(0,1,\sqrt{8})
+\end{align*}
+
+```{r}
+cat('=',pnorm(0,1,sqrt(8)))
+```

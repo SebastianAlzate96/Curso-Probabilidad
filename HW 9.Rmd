@@ -1,0 +1,178 @@
+---
+title: "HW 9"
+author: "Sebastian Alzate Vargas"
+date: "22/10/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Problem 1
+Let $X\sim Gamma(2,1)$. Verify that the best moment bound is smaller than the best Chernoff bound for $P(X>10)$.
+
+### Solution 
+Tenemos que $X\sim Gamma(2, 1)$, entonces $\psi_X (t)=\dfrac{1}{(1-t)^\alpha}=\dfrac{1}{(1-t)^2}$
+
+Encontremos la cota Chernoff:
+
+
+
+\begin{align*}
+   P(X > 10)  &\le  e^{-10t} \psi (t)=e^{-10t} \dfrac{1}{(1-t)^2}
+\end{align*}
+
+Ahora encontremos la mejor cota de Chernoff:
+
+\begin{align*}
+    \dfrac{d}{dt}\left[\dfrac{e^{-10t} }{(1-t)^2}\right]&=\dfrac{10e^{-10t}t-8e^{-10t}}{(1-t)^3}=\dfrac{e^{-10t}(10t-8)}{(1-t)^3}=0
+\end{align*}
+
+Eso se cumple para 
+
+\begin{align*}
+    10t-8=0 \ \ \Rightarrow \ \ t=\dfrac{4}{5}
+\end{align*}
+
+Así,
+
+\begin{align*}
+    \inf \left\{e^{-10t} \psi (t)\right\}&=e^{-10\frac{4}{5}} \dfrac{1}{(1-\frac{4}{5})^2}=25e^{-8}
+\end{align*}
+
+Por otro lado, la cota del momento:
+
+\begin{align*}
+    P(X> 10)    \le \frac{E[X^{k}]}{10^{k}}=\dfrac{(2+k-1)\cdots2}{10^k}
+\end{align*}
+
+Ahora encontremos la mejor cota del  momento:
+
+Definamos $g(k+1)=\dfrac{(2+k)\cdots2}{10^{k+1}}$
+
+Entonces,
+
+\begin{align*}
+    g(k+1)&=\dfrac{(2+k)}{10}\cdot\dfrac{(2+k-1)\cdots2}{10^k}\\
+     g(k+1)&=\dfrac{(2+k)}{10} g(k)\\
+     \dfrac{ g(k+1)}{g(k)}&=\dfrac{(2+k)}{10}>1
+\end{align*}
+
+Esa ultima desigualdad se cumple para $k>8$. Entonces la función es decreciente para $k=1,...,8$ y creciente para $k>8$
+
+Así, 
+
+\begin{align*}
+   \inf_{k} \left\{E[X^k]/t^{k}\right\}&=\dfrac{(2+8-1)\cdots2}{10^8}=9!\cdot10^{-8}
+\end{align*}
+
+Finalmente,
+
+\begin{align*}
+    \inf_{k} \left\{E[X^k]/t^{k}\right\}&\le \inf_t \left\{e^{-ta}E[e^{tX}]\right\}\\
+    9!\cdot10^{-8} &\le 25e^{-8}
+\end{align*}
+
+```{r}
+cat('La desigualdad es:', factorial(9)*10^(-8)<=25*exp(-8))
+
+```
+
+
+
+## Problem 2
+Let $X_i\sim U[-1,1]$, $i=1,...,100$ and independent, let $\bar{X}=\frac1{100} \sum_{i=1}^{100} X_i$. Find the best Chernoff bound for $P(|\bar{X}|>0.20)$.
+
+### Solution 
+\begin{align*}
+    P(|\bar{X}| >a) &= 2P(\bar{X}>a) \\
+    &= 2P\left( \frac{1}{100}\sum_{i=1}^{100}X_i >a\right) \\
+    &= 2P\left( \sum_{i=1}^{100}X_i >100a\right)\\
+    & \leq 2e^{-100at}\psi_{\sum X_i}(t) \ \ \ \ \ \ \ \ \ \ \ \ \textit{, Chernoff bound} \\
+    &= 2e^{-100at}\left(\psi_{ X_i}(t)\right)^{100} \ \ \ \ \ \ \ \textit{, los $X_i$ son independientes} \\
+    &= 2e^{-100at}\left(\frac{e^{-t}-e^t}{2t}\right)^{100} \\
+    &= \frac{e^{-100at}}{2^{99}}\left(\frac{e^{-t}-e^t}{t}\right)^{100}
+\end{align*}
+
+Entonces,
+
+\begin{align*}
+    P(|\bar{X}| >0.20) &\leq \frac{e^{-20t}}{2^{99}}\left(\frac{e^{-t}-e^t}{t}\right)^{100}
+\end{align*}
+
+Sea $$g(t) = \frac{e^{-20t}\left(e^{-t}-e^t\right)^{100}}{2^{99}t^{100}}$$
+
+Podemos minimizar esta función para obtener la mejor cota de Chernoff
+
+```{r}
+k=(300:800)/1000
+up=rep(0, length(k))
+for(i in 1:length(k)){
+  up[i]=(exp(-20*k[i])*((exp(-k[i])-exp(k[i]))^100))/(2^99*(k[i]^100))
+} 
+plot(k, log(up), xlab="k",xlim = c(0.3,0.8),ylim = c(-5.5,-4.5))
+kmin=k[up==min(up)]
+abline(v=kmin)
+c(kmin, min(up))
+```
+
+
+
+## Problem 3
+Say $Xn\sim N(0,\frac 1n)$. Show that $X_n\rightarrow 0$ in quadratic mean, in distribution and in probability using definition 3.2.6 only.
+
+### Solution
+Tenemos $X_n\sim N\left(0,\frac{1}{n}\right)$
+
+
+\begin{align*}
+    E(X_n)&=0 \\ \\ 
+    Var(X_n)&=\dfrac{1}{n^2} \ \ \xrightarrow[n\rightarrow \infty] \ \ 0
+\end{align*}
+
+Así tenemos la convergencia quadratic mean
+
+ 
+ Tenemos que $X_n \rightarrow 0$ sii $F_n(x)\rightarrow 0$
+ 
+ \begin{align*}
+    \lim_{n\rightarrow\infty} F_n(x)&= \lim_{n\rightarrow\infty} \int_\infty^x \dfrac{n}{\sqrt{2\pi}}\exp\left\{-\dfrac{w^2\cdot n^2}{2}\right\}\ dw\\
+     &= \int_\infty^x \lim_{n\rightarrow\infty} \dfrac{n}{\sqrt{2\pi}}\exp\left\{-\dfrac{w^2\cdot n^2}{2}\right\} \ dw\\
+     &=\int_\infty^x \dfrac{1}{\sqrt{2\pi}}\lim_{n\rightarrow\infty} \dfrac{n}{\exp\left\{\dfrac{w^2\cdot n^2}{2}\right\}}\ dw\\
+     &=\int_\infty^x \dfrac{1}{\sqrt{2\pi}}\cdot 0 \ dw\\
+     &=\int_\infty^x 0 \ dw\\
+     &=0\\
+\end{align*}
+
+Asi, tenemos convergencia en distribucion.
+
+
+\begin{align*}
+    \lim_{n\rightarrow\infty} P(|X_n-X|>\varepsilon)&=\lim_{n\rightarrow\infty} P(|X_n-0|>\varepsilon)\\
+    &=\lim_{n\rightarrow\infty} P(|X_n|>\varepsilon)\\
+    &=\lim_{n\rightarrow\infty} 2P(X_n>\varepsilon)\\
+    &=\lim_{n\rightarrow\infty} \dfrac{2n}{\sqrt{2\pi}} \int_\varepsilon^\infty \exp\left\{-\dfrac{w^2\cdot n^2}{2}\right\} \ dw \\
+    &\le \lim_{n\rightarrow\infty} \dfrac{2n}{\sqrt{2\pi}} \int_\varepsilon^\infty \dfrac{w}{\varepsilon} \exp\left\{-\dfrac{w^2\cdot n^2}{2}\right\} \ dw
+\end{align*}
+
+La ultima desigualdad se da porque $w>\varepsilon>0$. Sea $u=-\dfrac{w^2\cdot n^2}{2}$ entonces $du=-w n^2 \ dw$. Entonces 
+
+\begin{align*}
+    &=\lim_{n\rightarrow\infty} \dfrac{2n}{\sqrt{2\pi}} \int_\varepsilon^\infty \dfrac{-1}{n^2\varepsilon} \exp\left\{u\right\} \ du \\
+    &=\lim_{n\rightarrow\infty} \dfrac{-2}{\sqrt{2\pi}n\varepsilon} \int_\varepsilon^\infty  \exp\left\{u\right\} \ du \\
+    &=\lim_{n\rightarrow\infty} \dfrac{-2}{\sqrt{2\pi}n\varepsilon} \exp\left\{u\right\} |_\varepsilon^\infty\\
+     &=\lim_{n\rightarrow\infty} \dfrac{-2}{\sqrt{2\pi}n\varepsilon} \exp\left\{-\dfrac{w^2\cdot n^2}{2}\right\} |_\varepsilon^\infty\\
+      &=\lim_{n\rightarrow\infty} \dfrac{2}{\sqrt{2\pi}n\varepsilon} \exp\left\{-\dfrac{\varepsilon^2\cdot n^2}{2}\right\}\\
+     &=\dfrac{2}{\sqrt{2\pi}\varepsilon}\lim_{n\rightarrow\infty} \dfrac{1}{n\exp\left\{\varepsilon^2\cdot n^2/2\right\} } \\
+     &=\dfrac{2}{\sqrt{2\pi}\varepsilon} \cdot 0 \\
+     &= 0
+\end{align*}
+
+Asi, 
+
+\begin{align*}
+    \lim_{n\rightarrow\infty} P(|X_n-X|>\varepsilon) \le 0
+\end{align*}
+
+por tanto $\lim_{n\rightarrow\infty} P(|X_n-X|>\varepsilon) =0$
+
+Asi, tenemos convergencia en probabilidad.

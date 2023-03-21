@@ -1,0 +1,119 @@
+---
+title: "HW 11"
+author: "Sebastian Alzate Vargas"
+date: "9/11/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Problem 1
+Let $X_1,...,X_{100}\sim Exp(1.3)$, independent, and let $S=\sum _{i=1}^{100} X_i$. Find $P(S>100)$
+
+(a) directly
+
+(b) using the CLT
+
+### Solution 
+
+(a) 
+
+Usemos la generadora de momentos para encontrar la función de distribución de $s$
+
+\begin{align*}
+    \psi(s)&=\psi\left(\sum _{i=1}^{100} X_i \right)\\
+    &= \psi\left( X_i \right)^n, \hspace{1 cm} \textit{$X_i'$s son independientes}\\ 
+    &= \left(\dfrac{1}{1-t/\lambda} \right)^n
+\end{align*}
+
+Sea $\alpha=n$ y $\beta=\lambda$.
+
+Así, suma de distribuciones exponenciales es una una distribución gamma con los siguientes parámetros $\Gamma(n,\lambda)=\Gamma(100,1.3)$ 
+
+\begin{align*}
+    P(S>100)=pgamma(100,100,1.3,lower.tail = F)
+\end{align*}
+
+```{r}
+c('P(S>100)'=pgamma(100,100,scale=1/1.3,lower.tail = F))
+```
+
+
+
+(b) 
+
+$E(X_i)=\dfrac{1}{1.3}$ y $var(X_i)=\dfrac{1}{1.3^2}$
+
+\begin{align*}
+     P(S>100)&= P\left(\overline{X}>1\right)\\
+     &=P\left(\dfrac{\overline{X}-1/1.3}{\frac{1}{1.3\sqrt{100}}}>\dfrac{1-1/1.3}{\frac{1}{1.3\sqrt{100}}}\right)\\
+     &=P\left(\dfrac{\overline{X}-1/1.3}{\frac{1}{1.3\sqrt{100}}}>3\right)\\
+     &=1-\Phi(3)\\
+     &=pnorm(3,lower.tail = F)
+\end{align*}
+
+```{r}
+c('P(S>100)'=pnorm(3,lower.tail = F))
+```
+
+
+## Problem 2
+Let $X_n\sim U[0,1]$, $n=1,2,..$, and independent. Use the CLT to find $P(\sum_{i=1}^{50} X_{i}>24)$. Give an upper and a lower bound for this probability.
+
+### Solution 
+
+
+Tenemos:
+
+\begin{align*}
+E(X_n)= \frac{1}{2},\hspace{0.5 cm} Var(X_n)= \frac{1}{12}
+\end{align*}
+
+Por otro lado tenemos, 
+
+\begin{align*}
+P\left(\sum_{i=1}^{50} X_i > 24\right) &=P\left(\dfrac{\sum_{i=1}^{50} X_i}{50} >\dfrac{24}{50}\right)\\ \\
+&=P\left(\bar{X} > \dfrac{24}{50} \right) \\ \\
+&=P\left( \sqrt{50}\frac{\bar{X} - 1/2}{\sqrt{1/12}} > \sqrt{50}\frac{24/50 - 1/2}{\sqrt{1/12}}  \right)\\ \\
+&=P\left( \sqrt{50}\frac{\bar{X} - 1/2}{\sqrt{1/12}} > -0.4898 \right)\\ \\
+&= P\left( Z> -0.4898 \right)\\ \\
+&=pnorm(-0.4898,lower.tail = F)
+\end{align*}
+
+```{r}
+c('P(Z> -0.4898)'=pnorm(-0.4898,lower.tail = F))
+```
+
+
+Usando el teorema de Berry-Essen. Notemos que $E(X_i-1/2)=0$ y $var(X_i-1/2)=1/12$ entonces,
+
+\begin{align*}
+    \left| P\left( \sqrt{50}\frac{\bar{X} - 1/2}{\sqrt{1/12}}<x\right)-\Phi(x) \right| &\le \dfrac{0.4748\rho}{\sigma^3\sqrt{n}}\\ \\
+    \left|P\left(\sum_{i=1}^{50} X_i < 24\right)-\Phi(-0.4898) \right| &\le \dfrac{0.4748\rho}{\sqrt{1/12}^3\sqrt{50}} \\ \\
+    \left|P\left(\sum_{i=1}^{50} X_i > 24\right)-\Phi(0.4898) \right| &\le \dfrac{0.4748\rho}{\sqrt{1/12}^3\sqrt{50}}
+\end{align*}
+
+Por otro lado,
+
+\begin{align*}
+\rho &= \int_0^{1} |x-1/2|^3dx\\
+&=\int_0^{1/2} -(x-1/2)^3dx + \int_{1/2}^1 (x-1/2)^3dx\\
+&= \frac{-(x-1/2)^4}{4}|_0^{0.5} +\frac{(x-1/2)^4}{4}|_{0.5}^1\\ 
+&= \frac{(0-1/2)^4}{4} +\frac{(1-1/2)^4}{4}\\
+&= \frac{2(1/2)^4}{4}\\
+&= \dfrac{1}{32}
+\end{align*}
+
+Finalmente,
+
+\begin{align*}
+    \left|P\left(\sum_{i=1}^{50} X_i > 24\right)-\Phi(0.4898) \right| &\le \dfrac{0.4748\cdot  1/32}{\sqrt{1/12}^3\sqrt{50}}\\ \\
+    \left|P\left(\sum_{i=1}^{50} X_i > 24\right)-0.6878623 \right| &\le 0.08722
+\end{align*}
+
+
+Asi,
+
+$$-0.08722+0.6878623 \le P\left(\sum_{i=1}^{50} X_i > 24\right) \le 0.08722+0.6878623$$
+
+$$0.6006423 \le P\left(\sum_{i=1}^{50} X_i > 24\right) \le 0.7750823$$
